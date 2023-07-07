@@ -1,7 +1,5 @@
 package org.example;
 
-import org.example.model.Rouge;
-
 public class Main {
 
     public static void main(String[] args) throws InterruptedException {
@@ -9,28 +7,66 @@ public class Main {
         char playerSymbol = '@';
         int playerPositionX = 10;
         int playerPositionY = 10;
+        int playerPreviousPositionX = 10;
+        int playerPreviousPositionY = 10;
 
 
         UserInterface ui = new UserInterface(110, 40);
         InputHandler inputHandler = new InputHandler(ui, playerPositionX, playerPositionY);
 
-        while (true) {
+
+
+        while (!inputHandler.wasEscapePressed()) {
 
             inputHandler.getGatherKeystrokes().take();
 
             int nextPosX = inputHandler.getPlayerPositionX();
             int nextPosY = inputHandler.getPlayerPositionY();
 
-            if (ui.getCharCharOfPosition(nextPosX, nextPosY).character != 'X') {
+            if (ui.getCharCharOfPosition(nextPosX, nextPosY).character != 'z') {
                 playerPositionX = nextPosX;
                 playerPositionY = nextPosY;
+                playerPreviousPositionX = inputHandler.getPreviousPlayerPositionX();
+                playerPreviousPositionY = inputHandler.getPreviousPlayerPositionY();
             }
             
             inputHandler.setPlayerPositionX(playerPositionX);
             inputHandler.setPlayerPositionY(playerPositionY);
 
-            ui.draw(playerSymbol, playerPositionX, playerPositionY,
-                    inputHandler.getPreviousPlayerPositionX(), inputHandler.getPreviousPlayerPositionY());
+            //System.out.println(ui.getCharCharOfPosition(nextPosX, nextPosY).character);
+            print3by3field(playerPositionX, playerPositionY, ui);
+
+            ui.draw(playerSymbol, playerPositionX, playerPositionY, playerPreviousPositionX, playerPreviousPositionY);
         }
+
+        ui.dispose();
+    }
+
+    /**
+     * this method gets a position and prints all the chars next to it
+     *
+     * @param posX position X
+     * @param posY position Y
+     * @param ui the UserInterface with the ascii-panel the characters are on
+     */
+    private static void print3by3field(int posX, int posY, UserInterface ui) {
+        for (int j = 0; j < 3; j++) {
+            for (int i = 0; i < 3; i++) {
+                char currentChar = ui.getCharCharOfPosition(posX + i - 1, posY + j - 1).character;
+
+                if (i == 1 && j == 1) {
+                    System.out.print("@ ");
+                } else {
+                    if (Character.isWhitespace(currentChar) || currentChar == '@') {
+                        System.out.print(". ");
+                    } else {
+                        System.out.print(ui.getCharCharOfPosition(posX + i - 1, posY + j - 1).character
+                                + " ");
+                    }
+                }
+            }
+            System.out.println();
+        }
+        System.out.println();
     }
 }

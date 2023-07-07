@@ -2,8 +2,6 @@ package org.example;
 
 import asciiPanel.AsciiCharacterData;
 import asciiPanel.AsciiPanel;
-import asciiPanel.TileTransformer;
-import model.Map;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +12,7 @@ public class UserInterface extends JFrame {
     private final int height;
     private final int widthInPixels;
     private final int heightInPixels;
-    private AsciiPanel panel;
+    private final AsciiPanel panel;
 
 
     UserInterface(int width, int height) {
@@ -23,6 +21,7 @@ public class UserInterface extends JFrame {
         this.width = width;
         this.height = height;
         this.panel = new AsciiPanel(this.width, this.height);
+        this.panel.setDefaultBackgroundColor(Color.BLUE);
 
         this.widthInPixels = panel.getCharWidth() * this.width;
         System.out.println(panel.getCharWidth());
@@ -50,6 +49,7 @@ public class UserInterface extends JFrame {
         panel.write(playerSymbol, playerPosX, playerPosY);
         panel.write(' ', previousPlayerPosX, previousPlayerPosY);
         panel.write('X', 20, 20);
+        panel.write('z', 10, 11);
 
 /*        panel.withEachTile(  (x, y, asciiCharacterData) -> {
             asciiCharacterData.character = '.';

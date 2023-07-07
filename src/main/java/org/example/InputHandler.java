@@ -11,6 +11,7 @@ public class InputHandler implements KeyListener {
     private int playerPositionY;
     private int previousPlayerPositionX;
     private int previousPlayerPositionY;
+    private boolean wasEscapePressed;
     private final BlockingQueue<KeyEvent> gatherKeystrokes = new LinkedBlockingQueue<>();
 
     public InputHandler(JFrame inputWindow, int playerPositionX, int playerPositionY) {
@@ -19,6 +20,7 @@ public class InputHandler implements KeyListener {
         this.playerPositionY = playerPositionY;
         this.previousPlayerPositionX = playerPositionX;
         this.previousPlayerPositionY = playerPositionY;
+        this.wasEscapePressed = false;
     }
 
     public int getPlayerPositionX() {
@@ -49,47 +51,57 @@ public class InputHandler implements KeyListener {
         return gatherKeystrokes;
     }
 
+    public boolean wasEscapePressed() {
+        return wasEscapePressed;
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println(e.getKeyChar());
+
+        //prints current keystroke
+        //System.out.println(e.getKeyChar());
 
         if (e.getKeyChar() == 'w') {
-            previousPlayerPositionY = playerPositionY;
-            previousPlayerPositionX = playerPositionX;
-            playerPositionY--;
+            this.previousPlayerPositionY = playerPositionY;
+            this.previousPlayerPositionX = playerPositionX;
+            this.playerPositionY--;
 
-            System.out.println(playerPositionX + "," + playerPositionY);
-            gatherKeystrokes.add(e);
+            this.gatherKeystrokes.add(e);
         }
 
         if (e.getKeyChar() == 'a') {
-            previousPlayerPositionY = playerPositionY;
-            previousPlayerPositionX = playerPositionX;
-            playerPositionX--;
+            this.previousPlayerPositionY = playerPositionY;
+            this.previousPlayerPositionX = playerPositionX;
+            this.playerPositionX--;
 
-            System.out.println(playerPositionX + "," + playerPositionY);
             gatherKeystrokes.add(e);
         }
 
         if (e.getKeyChar() == 's') {
-            previousPlayerPositionY = playerPositionY;
-            previousPlayerPositionX = playerPositionX;
-            playerPositionY++;
+            this.previousPlayerPositionY = playerPositionY;
+            this.previousPlayerPositionX = playerPositionX;
+            this.playerPositionY++;
 
-            System.out.println(playerPositionX + "," + playerPositionY);
-            gatherKeystrokes.add(e);
+            this.gatherKeystrokes.add(e);
         }
 
         if (e.getKeyChar() == 'd') {
-            previousPlayerPositionY = playerPositionY;
-            previousPlayerPositionX = playerPositionX;
-            playerPositionX++;
+            this.previousPlayerPositionY = playerPositionY;
+            this.previousPlayerPositionX = playerPositionX;
+            this.playerPositionX++;
 
-            System.out.println(playerPositionX + "," + playerPositionY);
+            this.gatherKeystrokes.add(e);
+        }
+
+        if (e.getKeyChar() == KeyEvent.VK_ESCAPE) {
+
+            this.wasEscapePressed = true;
+
+            System.out.println("closing game...");
             gatherKeystrokes.add(e);
         }
     }

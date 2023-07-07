@@ -1,6 +1,5 @@
 package org.example.model;
 
-import model.Map;
 public class Rouge {
 
     private final Map map;

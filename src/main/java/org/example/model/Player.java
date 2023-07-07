@@ -1,6 +1,5 @@
 package org.example.model;
 
-import model.Entity;
 public class Player extends Entity {
     private Character playerSymbol;
 
