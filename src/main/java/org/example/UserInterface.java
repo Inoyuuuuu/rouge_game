@@ -21,12 +21,9 @@ public class UserInterface extends JFrame {
         this.width = width;
         this.height = height;
         this.panel = new AsciiPanel(this.width, this.height);
-        this.panel.setDefaultBackgroundColor(Color.BLUE);
 
         this.widthInPixels = panel.getCharWidth() * this.width;
-        System.out.println(panel.getCharWidth());
         this.heightInPixels = panel.getCharHeight() * this.height;
-        System.out.println(panel.getCharHeight());
 
         super.add(this.panel);
         super.setSize(this.widthInPixels, this.heightInPixels);
@@ -46,10 +43,8 @@ public class UserInterface extends JFrame {
     public void draw(char playerSymbol, int playerPosX, int playerPosY, int previousPlayerPosX,
                      int previousPlayerPosY) {
 
-        panel.write(playerSymbol, playerPosX, playerPosY);
         panel.write(' ', previousPlayerPosX, previousPlayerPosY);
-        panel.write('X', 20, 20);
-        panel.write('z', 10, 11);
+        panel.write(playerSymbol, playerPosX, playerPosY);
 
 /*        panel.withEachTile(  (x, y, asciiCharacterData) -> {
             asciiCharacterData.character = '.';
@@ -60,5 +55,31 @@ public class UserInterface extends JFrame {
         refresh();
     }
 
+    // draw a rectangle at a specific position
+    public void drawRectangle(char character, int posX, int posY, int width, int height, boolean isFilled) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (isFilled) {
+                    panel.write(character, posX + i, posY + j);
+                } else {
+                    if (i == 0 || i == width - 1 || j == 0 || j == height - 1) {
+                        panel.write(character, posX + i, posY + j);
+                    }
+                }
+            }
+        }
+    }
 
+    // draw a rectangle at a specific position and fill it with a custom char
+    public void drawRectangle(char character, int posX, int posY, int width, int height, char fillChar) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (i == 0 || i == width - 1 || j == 0 || j == height - 1) {
+                    panel.write(character, posX + i, posY + j);
+                } else {
+                    panel.write(fillChar, posX + i, posY + j);
+                }
+            }
+        }
+    }
 }

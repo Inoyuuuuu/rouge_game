@@ -1,7 +1,18 @@
 package org.example;
 
+/**
+ * Main class of the program
+ * @author ukuny
+ *
+ */
 public class Main {
 
+    /**
+     * the entry point to the rouge program
+     *
+     * @param args not used
+     * @throws InterruptedException throw because of BlockingQueue.take()
+     */
     public static void main(String[] args) throws InterruptedException {
 
         char playerSymbol = '@';
@@ -14,16 +25,15 @@ public class Main {
         UserInterface ui = new UserInterface(110, 40);
         InputHandler inputHandler = new InputHandler(ui, playerPositionX, playerPositionY);
 
+        ui.drawRectangle('X', 21, 21, 8, 5, false);
 
-
+        //while loop keeps running while the window is open and escape isn't ´pressed
         while (!inputHandler.wasEscapePressed()) {
-
-            inputHandler.getGatherKeystrokes().take();
-
             int nextPosX = inputHandler.getPlayerPositionX();
             int nextPosY = inputHandler.getPlayerPositionY();
 
-            if (ui.getCharCharOfPosition(nextPosX, nextPosY).character != 'z') {
+            if (ui.getCharCharOfPosition(nextPosX, nextPosY).character != 'X') {
+
                 playerPositionX = nextPosX;
                 playerPositionY = nextPosY;
                 playerPreviousPositionX = inputHandler.getPreviousPlayerPositionX();
@@ -33,12 +43,15 @@ public class Main {
             inputHandler.setPlayerPositionX(playerPositionX);
             inputHandler.setPlayerPositionY(playerPositionY);
 
-            //System.out.println(ui.getCharCharOfPosition(nextPosX, nextPosY).character);
             print3by3field(playerPositionX, playerPositionY, ui);
 
             ui.draw(playerSymbol, playerPositionX, playerPositionY, playerPreviousPositionX, playerPreviousPositionY);
+
+            inputHandler.getGatherKeystrokes().take();
         }
 
+        //if while loop ends, close window
+        ui.setVisible(false);
         ui.dispose();
     }
 
@@ -57,6 +70,7 @@ public class Main {
                 if (i == 1 && j == 1) {
                     System.out.print("@ ");
                 } else {
+
                     if (Character.isWhitespace(currentChar) || currentChar == '@') {
                         System.out.print(". ");
                     } else {
@@ -67,6 +81,7 @@ public class Main {
             }
             System.out.println();
         }
+
         System.out.println();
     }
 }
