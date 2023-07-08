@@ -27,6 +27,9 @@ public class Main {
         //TODO: implement draw a rectangle
         //drawRectangle();
 
+        //TODO: implement a position valid check
+        //so if we try to go out of bounds, our program doesnt crash
+
         //main loop
         while (!inputHandler.wasEscapePressed()) {
 
