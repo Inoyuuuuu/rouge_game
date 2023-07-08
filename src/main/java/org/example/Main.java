@@ -21,18 +21,21 @@ public class Main {
         int playerPreviousPositionX = 10;
         int playerPreviousPositionY = 10;
 
-
         UserInterface ui = new UserInterface(110, 40);
         InputHandler inputHandler = new InputHandler(ui, playerPositionX, playerPositionY);
 
         ui.drawRectangle('X', 21, 21, 8, 5, false);
 
-        //while loop keeps running while the window is open and escape isn't ´pressed
+
+        //main loop
         while (!inputHandler.wasEscapePressed()) {
+
             int nextPosX = inputHandler.getPlayerPositionX();
             int nextPosY = inputHandler.getPlayerPositionY();
 
-            if (ui.getCharCharOfPosition(nextPosX, nextPosY).character != 'X') {
+            //wall detection
+            if (ui.isPositionInPanel(nextPosX, nextPosY)
+                    &&  ui.getCharCharOfPosition(nextPosX, nextPosY).character != 'X') {
 
                 playerPositionX = nextPosX;
                 playerPositionY = nextPosY;
@@ -43,14 +46,17 @@ public class Main {
             inputHandler.setPlayerPositionX(playerPositionX);
             inputHandler.setPlayerPositionY(playerPositionY);
 
+            //print player + surroundings in console
             print3by3field(playerPositionX, playerPositionY, ui);
 
-            ui.draw(playerSymbol, playerPositionX, playerPositionY, playerPreviousPositionX, playerPreviousPositionY);
+            //draw player
+            ui.drawPlayer(playerSymbol, playerPositionX, playerPositionY,
+                    playerPreviousPositionX, playerPreviousPositionY);
 
             inputHandler.getGatherKeystrokes().take();
         }
 
-        //if while loop ends, close window
+        //after while loop, close window
         ui.setVisible(false);
         ui.dispose();
     }
@@ -63,19 +69,22 @@ public class Main {
      * @param ui the UserInterface with the ascii-panel the characters are on
      */
     private static void print3by3field(int posX, int posY, UserInterface ui) {
+
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
-                char currentChar = ui.getCharCharOfPosition(posX + i - 1, posY + j - 1).character;
+                if (ui.isPositionInPanel(posX + i - 1, posY + j - 1)) {
+                    char currentChar = ui.getCharCharOfPosition(posX + i - 1, posY + j - 1).character;
 
-                if (i == 1 && j == 1) {
-                    System.out.print("@ ");
-                } else {
-
-                    if (Character.isWhitespace(currentChar) || currentChar == '@') {
-                        System.out.print(". ");
+                    if (i == 1 && j == 1) {
+                        System.out.print("@ ");
                     } else {
-                        System.out.print(ui.getCharCharOfPosition(posX + i - 1, posY + j - 1).character
-                                + " ");
+
+                        if (Character.isWhitespace(currentChar) || currentChar == '@') {
+                            System.out.print(". ");
+                        } else {
+                            System.out.print(ui.getCharCharOfPosition(posX + i - 1, posY + j - 1).character
+                                    + " ");
+                        }
                     }
                 }
             }

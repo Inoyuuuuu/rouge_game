@@ -16,10 +16,12 @@ public class InputHandler implements KeyListener {
 
     public InputHandler(JFrame inputWindow, int playerPositionX, int playerPositionY) {
         inputWindow.addKeyListener(this);
+
         this.playerPositionX = playerPositionX;
         this.playerPositionY = playerPositionY;
         this.previousPlayerPositionX = playerPositionX;
         this.previousPlayerPositionY = playerPositionY;
+
         this.wasEscapePressed = false;
     }
 

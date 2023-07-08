@@ -33,24 +33,21 @@ public class UserInterface extends JFrame {
     }
 
     public AsciiCharacterData getCharCharOfPosition(int posX, int posY) {
-        return panel.getCharacters()[posX][posY];
+        if (isPositionInPanel(posX, posY)) {
+            return panel.getCharacters()[posX][posY];
+        }
+        return null;
     }
 
     public void refresh() {
         super.repaint();
     }
 
-    public void draw(char playerSymbol, int playerPosX, int playerPosY, int previousPlayerPosX,
+    //overwrite previous position and write player symbol at new position
+    public void drawPlayer(char playerSymbol, int playerPosX, int playerPosY, int previousPlayerPosX,
                      int previousPlayerPosY) {
-
         panel.write(' ', previousPlayerPosX, previousPlayerPosY);
         panel.write(playerSymbol, playerPosX, playerPosY);
-
-/*        panel.withEachTile(  (x, y, asciiCharacterData) -> {
-            asciiCharacterData.character = '.';
-            asciiCharacterData.foregroundColor =  Color.CYAN;
-            //asciiCharacterData.backgroundColor = Color.BLUE;
-        });*/
 
         refresh();
     }
@@ -81,5 +78,10 @@ public class UserInterface extends JFrame {
                 }
             }
         }
+    }
+
+    public boolean isPositionInPanel(int posX, int posY) {
+        return posX < this.width - 2 && posX > 0 &&
+                posY < this.height - 2 && posY > 0;
     }
 }
