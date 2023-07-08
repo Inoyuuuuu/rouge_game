@@ -24,8 +24,8 @@ public class Main {
         UserInterface ui = new UserInterface(110, 40);
         InputHandler inputHandler = new InputHandler(ui, playerPositionX, playerPositionY);
 
-        ui.drawRectangle('X', 21, 21, 8, 5, false);
-
+        //TODO: implement draw a rectangle
+        //drawRectangle();
 
         //main loop
         while (!inputHandler.wasEscapePressed()) {
@@ -34,8 +34,7 @@ public class Main {
             int nextPosY = inputHandler.getPlayerPositionY();
 
             //wall detection
-            if (ui.isPositionInPanel(nextPosX, nextPosY)
-                    &&  ui.getCharCharOfPosition(nextPosX, nextPosY).character != 'X') {
+            if (ui.getCharCharOfPosition(nextPosX, nextPosY).character != 'X') {
 
                 playerPositionX = nextPosX;
                 playerPositionY = nextPosY;
@@ -72,25 +71,22 @@ public class Main {
 
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
-                if (ui.isPositionInPanel(posX + i - 1, posY + j - 1)) {
-                    char currentChar = ui.getCharCharOfPosition(posX + i - 1, posY + j - 1).character;
+                char currentChar = ui.getCharCharOfPosition(posX + i - 1, posY + j - 1).character;
 
-                    if (i == 1 && j == 1) {
-                        System.out.print("@ ");
+                if (i == 1 && j == 1) {
+                    System.out.print("@ ");
+                } else {
+
+                    if (Character.isWhitespace(currentChar) || currentChar == '@') {
+                        System.out.print(". ");
                     } else {
-
-                        if (Character.isWhitespace(currentChar) || currentChar == '@') {
-                            System.out.print(". ");
-                        } else {
-                            System.out.print(ui.getCharCharOfPosition(posX + i - 1, posY + j - 1).character
-                                    + " ");
-                        }
+                        System.out.print(ui.getCharCharOfPosition(posX + i - 1, posY + j - 1).character
+                                + " ");
                     }
                 }
             }
             System.out.println();
         }
-
         System.out.println();
     }
 }
