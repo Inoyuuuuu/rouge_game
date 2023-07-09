@@ -27,7 +27,7 @@ public class Main {
         //TODO: implement draw a rectangle
         //drawRectangle();
 
-        //TODO: implement a position valid check
+        //TODO: implement a position check
         //so if we try to go out of bounds, our program doesnt crash
 
         //main loop
