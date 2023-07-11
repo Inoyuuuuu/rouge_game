@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import javax.swing.*;
+import javax.swing.JFrame;
 
 public class InputHandler implements KeyListener {
     private int playerPositionX;
@@ -64,8 +64,7 @@ public class InputHandler implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
 
-        //prints current keystroke
-        //System.out.println(e.getKeyChar());
+        //System.out.println(e.getKeyChar());  <- prints current keystroke
 
         if (e.getKeyChar() == 'w') {
             this.previousPlayerPositionY = playerPositionY;

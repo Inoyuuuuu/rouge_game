@@ -30,6 +30,7 @@ public class Main {
         //TODO: implement a position check
         //so if we try to go out of bounds, our program doesnt crash
 
+
         //main loop
         while (!inputHandler.wasEscapePressed()) {
 
@@ -49,7 +50,7 @@ public class Main {
             inputHandler.setPlayerPositionY(playerPositionY);
 
             //print player + surroundings in console
-            print3by3field(playerPositionX, playerPositionY, ui);
+            print3x3field(playerPositionX, playerPositionY, ui);
 
             //draw player
             ui.drawPlayer(playerSymbol, playerPositionX, playerPositionY,
@@ -70,7 +71,7 @@ public class Main {
      * @param posY position Y
      * @param ui the UserInterface with the ascii-panel the characters are on
      */
-    private static void print3by3field(int posX, int posY, UserInterface ui) {
+    private static void print3x3field(int posX, int posY, UserInterface ui) {
 
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
@@ -79,7 +80,6 @@ public class Main {
                 if (i == 1 && j == 1) {
                     System.out.print("@ ");
                 } else {
-
                     if (Character.isWhitespace(currentChar) || currentChar == '@') {
                         System.out.print(". ");
                     } else {

@@ -32,13 +32,14 @@ public class UserInterface extends JFrame {
         super.repaint();
     }
 
+    public void refresh() {
+        super.repaint();
+    }
+
     public AsciiCharacterData getCharCharOfPosition(int posX, int posY) {
         return panel.getCharacters()[posX][posY];
     }
 
-    public void refresh() {
-        super.repaint();
-    }
 
     //overwrite previous position and write player symbol at new position
     public void drawPlayer(char playerSymbol, int playerPosX, int playerPosY, int previousPlayerPosX,
