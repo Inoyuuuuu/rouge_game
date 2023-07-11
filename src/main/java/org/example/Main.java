@@ -31,8 +31,8 @@ public class Main {
         //main loop
         while (!inputHandler.wasEscapePressed()) {
 
-            int nextPosX = inputHandler.getCalculatedPlayerPosX();
-            int nextPosY = inputHandler.getCalculatedPlayerPosY();
+            int nextPosX = inputHandler.getNextPlayerPosX();
+            int nextPosY = inputHandler.getNextPlayerPosY();
 
             //wall detection
             if (!ui.isOutOfBounds(nextPosX, nextPosY)
@@ -44,8 +44,8 @@ public class Main {
                 player.setPreviousPlayerPosY(inputHandler.getCurrentPlayerPosY());
             }
             
-            inputHandler.setCalculatedPlayerPosX(player.getPlayerPosX());
-            inputHandler.setCalculatedPlayerPosY(player.getPlayerPosY());
+            inputHandler.setNextPlayerPosX(player.getPlayerPosX());
+            inputHandler.setNextPlayerPosY(player.getPlayerPosY());
 
             //print player + surroundings in console
             print3x3field(nextPosX, nextPosY, ui);

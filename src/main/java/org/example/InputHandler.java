@@ -25,19 +25,19 @@ public class InputHandler implements KeyListener {
         this.wasEscapePressed = false;
     }
 
-    public int getCalculatedPlayerPosX() {
+    public int getNextPlayerPosX() {
         return calculatedPlayerPosX;
     }
 
-    public void setCalculatedPlayerPosX(int calculatedPlayerPosX) {
+    public void setNextPlayerPosX(int calculatedPlayerPosX) {
         this.calculatedPlayerPosX = calculatedPlayerPosX;
     }
 
-    public int getCalculatedPlayerPosY() {
+    public int getNextPlayerPosY() {
         return calculatedPlayerPosY;
     }
 
-    public void setCalculatedPlayerPosY(int calculatedPlayerPosY) {
+    public void setNextPlayerPosY(int calculatedPlayerPosY) {
         this.calculatedPlayerPosY = calculatedPlayerPosY;
     }
 
