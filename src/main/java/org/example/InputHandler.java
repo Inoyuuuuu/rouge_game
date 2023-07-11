@@ -7,46 +7,46 @@ import java.util.concurrent.LinkedBlockingQueue;
 import javax.swing.JFrame;
 
 public class InputHandler implements KeyListener {
-    private int playerPositionX;
-    private int playerPositionY;
-    private int previousPlayerPositionX;
-    private int previousPlayerPositionY;
+    private int calculatedPlayerPosX;
+    private int calculatedPlayerPosY;
+    private int currentPlayerPosX;
+    private int currentPlayerPosY;
     private boolean wasEscapePressed;
     private final BlockingQueue<KeyEvent> gatherKeystrokes = new LinkedBlockingQueue<>();
 
-    public InputHandler(JFrame inputWindow, int playerPositionX, int playerPositionY) {
+    public InputHandler(JFrame inputWindow, int initPlayerPositionX, int initPlayerPositionY) {
         inputWindow.addKeyListener(this);
 
-        this.playerPositionX = playerPositionX;
-        this.playerPositionY = playerPositionY;
-        this.previousPlayerPositionX = playerPositionX;
-        this.previousPlayerPositionY = playerPositionY;
+        this.calculatedPlayerPosX = initPlayerPositionX;
+        this.calculatedPlayerPosY = initPlayerPositionY;
+        this.currentPlayerPosX = calculatedPlayerPosX;
+        this.currentPlayerPosY = calculatedPlayerPosY;
 
         this.wasEscapePressed = false;
     }
 
-    public int getPlayerPositionX() {
-        return playerPositionX;
+    public int getCalculatedPlayerPosX() {
+        return calculatedPlayerPosX;
     }
 
-    public void setPlayerPositionX(int playerPositionX) {
-        this.playerPositionX = playerPositionX;
+    public void setCalculatedPlayerPosX(int calculatedPlayerPosX) {
+        this.calculatedPlayerPosX = calculatedPlayerPosX;
     }
 
-    public int getPlayerPositionY() {
-        return playerPositionY;
+    public int getCalculatedPlayerPosY() {
+        return calculatedPlayerPosY;
     }
 
-    public void setPlayerPositionY(int playerPositionY) {
-        this.playerPositionY = playerPositionY;
+    public void setCalculatedPlayerPosY(int calculatedPlayerPosY) {
+        this.calculatedPlayerPosY = calculatedPlayerPosY;
     }
 
-    public int getPreviousPlayerPositionX() {
-        return previousPlayerPositionX;
+    public int getCurrentPlayerPosX() {
+        return currentPlayerPosX;
     }
 
-    public int getPreviousPlayerPositionY() {
-        return previousPlayerPositionY;
+    public int getCurrentPlayerPosY() {
+        return currentPlayerPosY;
     }
 
     public BlockingQueue<KeyEvent> getGatherKeystrokes() {
@@ -67,33 +67,33 @@ public class InputHandler implements KeyListener {
         //System.out.println(e.getKeyChar());  <- prints current keystroke
 
         if (e.getKeyChar() == 'w') {
-            this.previousPlayerPositionY = playerPositionY;
-            this.previousPlayerPositionX = playerPositionX;
-            this.playerPositionY--;
+            this.currentPlayerPosY = calculatedPlayerPosY;
+            this.currentPlayerPosX = calculatedPlayerPosX;
+            this.calculatedPlayerPosY--;
 
             this.gatherKeystrokes.add(e);
         }
 
         if (e.getKeyChar() == 'a') {
-            this.previousPlayerPositionY = playerPositionY;
-            this.previousPlayerPositionX = playerPositionX;
-            this.playerPositionX--;
+            this.currentPlayerPosY = calculatedPlayerPosY;
+            this.currentPlayerPosX = calculatedPlayerPosX;
+            this.calculatedPlayerPosX--;
 
             gatherKeystrokes.add(e);
         }
 
         if (e.getKeyChar() == 's') {
-            this.previousPlayerPositionY = playerPositionY;
-            this.previousPlayerPositionX = playerPositionX;
-            this.playerPositionY++;
+            this.currentPlayerPosY = calculatedPlayerPosY;
+            this.currentPlayerPosX = calculatedPlayerPosX;
+            this.calculatedPlayerPosY++;
 
             this.gatherKeystrokes.add(e);
         }
 
         if (e.getKeyChar() == 'd') {
-            this.previousPlayerPositionY = playerPositionY;
-            this.previousPlayerPositionX = playerPositionX;
-            this.playerPositionX++;
+            this.currentPlayerPosY = calculatedPlayerPosY;
+            this.currentPlayerPosX = calculatedPlayerPosX;
+            this.calculatedPlayerPosX++;
 
             this.gatherKeystrokes.add(e);
         }

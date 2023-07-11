@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.model.Player;
+
 /**
  * Main class of the program
  * @author ukuny
@@ -15,14 +17,10 @@ public class Main {
      */
     public static void main(String[] args) throws InterruptedException {
 
-        char playerSymbol = '@';
-        int playerPositionX = 10;
-        int playerPositionY = 10;
-        int playerPreviousPositionX = 10;
-        int playerPreviousPositionY = 10;
+        Player player = new Player('@', 10, 10);
 
         UserInterface ui = new UserInterface(110, 40);
-        InputHandler inputHandler = new InputHandler(ui, playerPositionX, playerPositionY);
+        InputHandler inputHandler = new InputHandler(ui, player.getPlayerPosX(), player.getPlayerPosY());
 
         //TODO: implement draw a rectangle
         //drawRectangle();
@@ -33,27 +31,27 @@ public class Main {
         //main loop
         while (!inputHandler.wasEscapePressed()) {
 
-            int nextPosX = inputHandler.getPlayerPositionX();
-            int nextPosY = inputHandler.getPlayerPositionY();
+            int nextPosX = inputHandler.getCalculatedPlayerPosX();
+            int nextPosY = inputHandler.getCalculatedPlayerPosY();
 
             //wall detection
             if (!ui.isOutOfBounds(nextPosX, nextPosY) && ui.getCharCharOfPosition(nextPosX, nextPosY).character != '#') {
 
-                playerPositionX = nextPosX;
-                playerPositionY = nextPosY;
-                playerPreviousPositionX = inputHandler.getPreviousPlayerPositionX();
-                playerPreviousPositionY = inputHandler.getPreviousPlayerPositionY();
+                player.setPlayerPosX(nextPosX);
+                player.setPlayerPosY(nextPosY);
+                player.setPreviousPlayerPosX(inputHandler.getCurrentPlayerPosX());
+                player.setPreviousPlayerPosY(inputHandler.getCurrentPlayerPosY());
             }
             
-            inputHandler.setPlayerPositionX(playerPositionX);
-            inputHandler.setPlayerPositionY(playerPositionY);
+            inputHandler.setCalculatedPlayerPosX(player.getPlayerPosX());
+            inputHandler.setCalculatedPlayerPosY(player.getPlayerPosY());
 
             //print player + surroundings in console
-            print3x3field(playerPositionX, playerPositionY, ui);
+            print3x3field(nextPosX, nextPosY, ui);
 
             //draw player
-            ui.drawPlayer(playerSymbol, playerPositionX, playerPositionY,
-                    playerPreviousPositionX, playerPreviousPositionY);
+            ui.drawPlayer(player.getPlayerSymbol(), player.getPlayerPosX(), player.getPlayerPosY(),
+                    player.getPreviousPlayerPosX(), player.getPreviousPlayerPosY());
 
             inputHandler.getGatherKeystrokes().take();
         }
