@@ -35,7 +35,8 @@ public class Main {
             int nextPosY = inputHandler.getCalculatedPlayerPosY();
 
             //wall detection
-            if (!ui.isOutOfBounds(nextPosX, nextPosY) && ui.getCharCharOfPosition(nextPosX, nextPosY).character != '#') {
+            if (!ui.isOutOfBounds(nextPosX, nextPosY)
+                    && ui.getCharCharOfPosition(nextPosX, nextPosY).character != '#') {
 
                 player.setPlayerPosX(nextPosX);
                 player.setPlayerPosY(nextPosY);
