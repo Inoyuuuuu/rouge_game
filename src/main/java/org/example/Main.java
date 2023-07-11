@@ -27,8 +27,8 @@ public class Main {
         //TODO: implement draw a rectangle
         //drawRectangle();
 
-        //TODO: implement a position check
-        //so if we try to go out of bounds, our program doesnt crash
+        ui.drawBorder('O');
+        ui.drawRectangle('X', 20,20, 10, 10, false);
 
         //main loop
         while (!inputHandler.wasEscapePressed()) {
@@ -37,7 +37,7 @@ public class Main {
             int nextPosY = inputHandler.getPlayerPositionY();
 
             //wall detection
-            if (ui.getCharCharOfPosition(nextPosX, nextPosY).character != 'X') {
+            if (!ui.isOutOfBounds(nextPosX, nextPosY) && ui.getCharCharOfPosition(nextPosX, nextPosY).character != '#') {
 
                 playerPositionX = nextPosX;
                 playerPositionY = nextPosY;
@@ -74,16 +74,21 @@ public class Main {
 
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
-                char currentChar = ui.getCharCharOfPosition(posX + i - 1, posY + j - 1).character;
 
-                if (i == 1 && j == 1) {
-                    System.out.print("@ ");
+                if (ui.isOutOfBounds(posX + i - 1, posY + j - 1)) {
+                    System.out.println("meh");
                 } else {
-                    if (Character.isWhitespace(currentChar) || currentChar == '@') {
-                        System.out.print(". ");
+                    char currentChar = ui.getCharCharOfPosition(posX + i - 1, posY + j - 1).character;
+
+                    if (i == 1 && j == 1) {
+                        System.out.print("@ ");
                     } else {
-                        System.out.print(ui.getCharCharOfPosition(posX + i - 1, posY + j - 1).character
-                                + " ");
+                        if (Character.isWhitespace(currentChar) || currentChar == '@') {
+                            System.out.print(". ");
+                        } else {
+                            System.out.print(ui.getCharCharOfPosition(posX + i - 1, posY + j - 1).character
+                                    + " ");
+                        }
                     }
                 }
             }
