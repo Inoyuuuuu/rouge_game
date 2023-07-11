@@ -46,6 +46,8 @@ public class UserInterface extends JFrame {
         panel.write(' ', previousPlayerPosX, previousPlayerPosY);
         panel.write(playerSymbol, playerPosX, playerPosY);
 
+        panel.write('X', 15, 15);
+
         refresh();
     }
 }

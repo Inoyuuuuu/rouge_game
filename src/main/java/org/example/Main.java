@@ -30,7 +30,6 @@ public class Main {
         //TODO: implement a position check
         //so if we try to go out of bounds, our program doesnt crash
 
-
         //main loop
         while (!inputHandler.wasEscapePressed()) {
 
