@@ -20,39 +20,33 @@ public class Main {
         Player player = new Player('@', 10, 10);
 
         UserInterface ui = new UserInterface(110, 40);
-        InputHandler inputHandler = new InputHandler(ui, player.getPlayerPosX(), player.getPlayerPosY());
+        InputHandler inputHandler = new InputHandler(ui, player.getPlayerPosX(), player.getPlayerPosY(), player);
 
         //TODO: implement draw a rectangle
         //drawRectangle();
 
-        ui.drawBorder('O');
-        ui.drawRectangle('X', 20,20, 10, 10, false);
+        ui.drawBorder('#');
+        ui.drawRectangle('#', 20,20, 10, 10, false);
 
         //main loop
         while (!inputHandler.wasEscapePressed()) {
 
-            int nextPosX = inputHandler.getNextPlayerPosX();
-            int nextPosY = inputHandler.getNextPlayerPosY();
+            int nextPosX = player.getPlayerPosX();
+            int nextPosY = player.getPlayerPosY();
 
             //wall detection
-            if (!ui.isOutOfBounds(nextPosX, nextPosY)
-                    && ui.getCharCharOfPosition(nextPosX, nextPosY).character != '#') {
+            if (ui.isOutOfBounds(nextPosX, nextPosY)
+                    || ui.getCharCharOfPosition(nextPosX, nextPosY).character == '#') {
 
-                player.setPlayerPosX(nextPosX);
-                player.setPlayerPosY(nextPosY);
-                player.setPreviousPlayerPosX(inputHandler.getCurrentPlayerPosX());
-                player.setPreviousPlayerPosY(inputHandler.getCurrentPlayerPosY());
+                player.setPlayerPosX(player.getPreviousPlayerPosX());
+                player.setPlayerPosY(player.getPreviousPlayerPosY());
             }
-            
-            inputHandler.setNextPlayerPosX(player.getPlayerPosX());
-            inputHandler.setNextPlayerPosY(player.getPlayerPosY());
 
             //print player + surroundings in console
             print3x3field(nextPosX, nextPosY, ui);
 
             //draw player
-            ui.drawPlayer(player.getPlayerSymbol(), player.getPlayerPosX(), player.getPlayerPosY(),
-                    player.getPreviousPlayerPosX(), player.getPreviousPlayerPosY());
+            ui.drawPlayer(player);
 
             inputHandler.getGatherKeystrokes().take();
         }

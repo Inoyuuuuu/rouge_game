@@ -2,6 +2,7 @@ package org.example;
 
 import asciiPanel.AsciiCharacterData;
 import asciiPanel.AsciiPanel;
+import org.example.model.Player;
 
 import javax.swing.*;
 
@@ -55,10 +56,9 @@ public class UserInterface extends JFrame {
 
 
     //overwrite previous position and write player symbol at new position
-    public void drawPlayer(char playerSymbol, int playerPosX, int playerPosY, int previousPlayerPosX,
-                     int previousPlayerPosY) {
-        panel.write(' ', previousPlayerPosX, previousPlayerPosY);
-        panel.write(playerSymbol, playerPosX, playerPosY);
+    public void drawPlayer(Player player) {
+        panel.write('a', player.getPreviousPlayerPosX(), player.getPreviousPlayerPosY());
+        panel.write(player.getPlayerSymbol(), player.getPlayerPosX(), player.getPlayerPosY());
 
         refresh();
     }
