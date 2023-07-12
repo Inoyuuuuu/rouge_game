@@ -57,7 +57,7 @@ public class UserInterface extends JFrame {
 
     //overwrite previous position and write player symbol at new position
     public void drawPlayer(Player player) {
-        panel.write('a', player.getPreviousPlayerPosX(), player.getPreviousPlayerPosY());
+        panel.write(' ', player.getPreviousPlayerPosX(), player.getPreviousPlayerPosY());
         panel.write(player.getPlayerSymbol(), player.getPlayerPosX(), player.getPlayerPosY());
 
         refresh();

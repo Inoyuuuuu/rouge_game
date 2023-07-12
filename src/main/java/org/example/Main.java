@@ -19,11 +19,8 @@ public class Main {
 
         Player player = new Player('@', 10, 10);
 
-        UserInterface ui = new UserInterface(110, 40);
-        InputHandler inputHandler = new InputHandler(ui, player.getPlayerPosX(), player.getPlayerPosY(), player);
-
-        //TODO: implement draw a rectangle
-        //drawRectangle();
+        UserInterface ui = new UserInterface(115, 40);
+        InputHandler inputHandler = new InputHandler(ui, player);
 
         ui.drawBorder('#');
         ui.drawRectangle('#', 20,20, 10, 10, false);

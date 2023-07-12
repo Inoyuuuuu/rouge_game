@@ -9,17 +9,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 import javax.swing.JFrame;
 
 public class InputHandler implements KeyListener {
-    private int playerPosX;
-    private int playerPosY;
     private Player player;
     private boolean wasEscapePressed;
     private final BlockingQueue<KeyEvent> gatherKeystrokes = new LinkedBlockingQueue<>();
 
-    public InputHandler(JFrame inputWindow, int initPlayerPositionX, int initPlayerPositionY, Player player) {
+    public InputHandler(JFrame inputWindow, Player player) {
         inputWindow.addKeyListener(this);
 
-        this.playerPosX = initPlayerPositionX;
-        this.playerPosY = initPlayerPositionY;
         this.player = player;
         this.wasEscapePressed = false;
     }
