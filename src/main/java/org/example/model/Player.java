@@ -44,7 +44,7 @@ public class Player {
         this.previousPlayerPosX = previousPlayerPosX;
     }
 
-    public int  getPreviousPlayerPosY() {
+    public int getPreviousPlayerPosY() {
         return previousPlayerPosY;
     }
 
