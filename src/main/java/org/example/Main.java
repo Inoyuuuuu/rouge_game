@@ -40,7 +40,7 @@ public class Main {
             }
 
             //print player + surroundings in console
-            print3x3field(nextPosX, nextPosY, ui);
+            print3x3field(player.getPlayerPosX(), player.getPlayerPosY(), ui);
 
             //draw player
             ui.drawPlayer(player);
