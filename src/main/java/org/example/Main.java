@@ -24,6 +24,7 @@ public class Main {
         UserInterface ui = new UserInterface(115, 40);
         InputHandler inputHandler = new InputHandler(ui, player);
 
+        map.initRandomRectangles();
         map.initStartChamber(player);
 
         ui.drawMap(map);

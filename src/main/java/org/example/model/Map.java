@@ -10,9 +10,8 @@ public class Map {
     public Map(int width, int height) {
         this.height = height;
         this.width = width;
-        this.cells = new Cell[height][width];
+        this.cells = new Cell[width][height];
         initMap();
-        initRandomRectangles();
     }
 
     public Cell[][] getCells() {
@@ -28,36 +27,70 @@ public class Map {
     }
 
     private void initMap() {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                 this.cells[i][j] = new Cell('#');
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                 this.cells[i][j] = new Cell('#', CellType.BORDER);
             }
         }
     }
 
     private void drawRectangle(char character, int posX, int posY, int sizeX, int sizeY) {
-        for (int i = posY; i < posY + sizeY; i++) {
-            for (int j = posX; j < posX + sizeX; j++) {
+        for (int i = posX; i < posX + sizeX; i++) {
+            for (int j = posY; j < posY + sizeY; j++) {
                 cells[i][j].setContent(character);
+                cells[i][j].setCelltype(CellType.CHAMBER);
             }
         }
     }
 
-    private void initRandomRectangles() {
-        int amountOfRectangles = ThreadLocalRandom.current().nextInt(1, 7);
+    public void initRandomRectangles() {
+        int amountOfRectangles = ThreadLocalRandom.current().nextInt(1, 5);
+        int rectangleSizeX;
+        int rectangleSizeY;
+        int rectPosX;
+        int rectPosY;
 
         for (int i = 0; i < amountOfRectangles; i++) {
-            int rectangleX  = ThreadLocalRandom.current().nextInt(10, 95);
-            int rectangleY  = ThreadLocalRandom.current().nextInt(10, 20);
-            int rectangleSizeX = ThreadLocalRandom.current().nextInt(5, 20);
-            int rectangleSizeY = ThreadLocalRandom.current().nextInt(5, 20);
+            int counter = 0;
 
-            drawRectangle(' ', rectangleX, rectangleY, rectangleSizeX, rectangleSizeY);
+            do {
+                rectangleSizeX = ThreadLocalRandom.current().nextInt(5, 30);
+                rectangleSizeY = ThreadLocalRandom.current().nextInt(5, 30);
+
+                rectPosX  = ThreadLocalRandom.current().nextInt(1, 115 - rectangleSizeX);
+                rectPosY  = ThreadLocalRandom.current().nextInt(1, 40 - rectangleSizeY);
+                System.out.println(counter);
+                counter++;
+            } while (isRectangleOverlapping(rectPosX, rectPosY, rectangleSizeX, rectangleSizeY));
+
+
+
+            drawRectangle(' ', rectPosX, rectPosY, rectangleSizeX, rectangleSizeY);
         }
     }
 
     public void initStartChamber(Player player) {
-        drawRectangle(' ', player.getPlayerPosX() - 5, player.getPlayerPosY() - 5, 10, 10);
+        drawRectangle(' ', player.getPlayerPosX() - 5, player.getPlayerPosY() - 5,
+                10, 10);
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                cells[i + player.getPlayerPosX() - 5][j + player.getPlayerPosY() - 5].setCelltype(CellType.START_AREA);
+            }
+        }
     }
 
+    private boolean isRectangleOverlapping(int posX, int posY, int sizeX, int sizeY) {
+
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+
+                if (cells[i + posX][j + posY].getCelltype() == CellType.CHAMBER
+                        || cells[i + posX][j + posY].getCelltype() == CellType.START_AREA) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

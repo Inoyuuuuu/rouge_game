@@ -2,10 +2,12 @@ package org.example;
 
 import asciiPanel.AsciiCharacterData;
 import asciiPanel.AsciiPanel;
+import org.example.model.CellType;
 import org.example.model.Map;
 import org.example.model.Player;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class UserInterface extends JFrame {
 
@@ -38,7 +40,7 @@ public class UserInterface extends JFrame {
     }
 
     public AsciiCharacterData getCharCharOfPosition(int posX, int posY) {
-        if (isOutOfBounds(posX, posY) == true) {
+        if (isOutOfBounds(posX, posY)) {
             return null;
         }
         return panel.getCharacters()[posX][posY];
@@ -65,9 +67,15 @@ public class UserInterface extends JFrame {
     }
 
     public void drawMap(Map map) {
-        for (int height = 0; height < map.getHeight(); height++) {
-            for (int width = 0; width < map.getWidth(); width++) {
-                    panel.write(map.getCells()[height][width].getContent(), width, height);
+        for (int x = 0; x < map.getWidth(); x++) {
+            for (int y = 0; y < map.getHeight(); y++) {
+                    panel.write(map.getCells()[x][y].getContent(), x, y);
+
+                    if (map.getCells()[x][y].getCelltype() == CellType.START_AREA) {
+                        panel.write('.', x, y, Color.GREEN);
+                    } else if (map.getCells()[x][y].getCelltype() == CellType.CHAMBER) {
+                        panel.write('.', x, y, Color.RED);
+                    }
             }
         }
         refresh();
