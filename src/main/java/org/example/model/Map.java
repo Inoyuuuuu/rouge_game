@@ -87,8 +87,8 @@ public class Map {
 
     private boolean isRectangleOverlapping(int posX, int posY, int sizeX, int sizeY) {
 
-        for (int i = 0; i < sizeX; i++) {
-            for (int j = 0; j < sizeY; j++) {
+        for (int i = -1; i < sizeX + 1; i++) {
+            for (int j = -1; j < sizeY + 1; j++) {
 
                 if (cells[i + posX][j + posY].getCelltype() == CellType.CHAMBER
                         || cells[i + posX][j + posY].getCelltype() == CellType.START_AREA) {
