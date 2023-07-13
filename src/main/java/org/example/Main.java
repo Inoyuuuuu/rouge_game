@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.model.Map;
 import org.example.model.Player;
 
 /**
@@ -17,13 +18,15 @@ public class Main {
      */
     public static void main(String[] args) throws InterruptedException {
 
-        Player player = new Player('@', 10, 10);
+        Player player = new Player('@', 20, 20);
+        Map map = new Map(115, 40);
 
         UserInterface ui = new UserInterface(115, 40);
         InputHandler inputHandler = new InputHandler(ui, player);
 
-        ui.drawBorder('#');
-        ui.drawRectangle('#', 20,20, 10, 10, false);
+        map.initStartChamber(player);
+
+        ui.drawMap(map);
 
         //main loop
         while (!inputHandler.wasEscapePressed()) {

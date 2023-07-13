@@ -2,6 +2,7 @@ package org.example;
 
 import asciiPanel.AsciiCharacterData;
 import asciiPanel.AsciiPanel;
+import org.example.model.Map;
 import org.example.model.Player;
 
 import javax.swing.*;
@@ -63,6 +64,16 @@ public class UserInterface extends JFrame {
         refresh();
     }
 
+    public void drawMap(Map map) {
+        for (int height = 0; height < map.getHeight(); height++) {
+            for (int width = 0; width < map.getWidth(); width++) {
+                    panel.write(map.getCells()[height][width].getContent(), width, height);
+            }
+        }
+        refresh();
+    }
+
+
     //draws a border around the panel
     public void drawBorder(char wallSymbol) {
 
@@ -81,7 +92,7 @@ public class UserInterface extends JFrame {
     }
 
     // draw a rectangle at a specific position
-    public void drawRectangle(char character, int posX, int posY, int width, int height, boolean isFilled) {
+/*    public void drawRectangle(char character, int posX, int posY, int width, int height, boolean isFilled) {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
 
@@ -107,5 +118,5 @@ public class UserInterface extends JFrame {
                 }
             }
         }
-    }
+    }*/
 }
