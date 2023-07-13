@@ -44,14 +44,15 @@ public class Map {
     }
 
     public void initRandomRectangles() {
-        int amountOfRectangles = ThreadLocalRandom.current().nextInt(1, 5);
+        int amountOfRectangles = ThreadLocalRandom.current().nextInt(8, 10);
         int rectangleSizeX;
         int rectangleSizeY;
         int rectPosX;
         int rectPosY;
+        int maximumAmountOfTries = 10;
 
         for (int i = 0; i < amountOfRectangles; i++) {
-            int counter = 0;
+            int tries = 0;
 
             do {
                 rectangleSizeX = ThreadLocalRandom.current().nextInt(5, 30);
@@ -59,13 +60,17 @@ public class Map {
 
                 rectPosX  = ThreadLocalRandom.current().nextInt(1, 115 - rectangleSizeX);
                 rectPosY  = ThreadLocalRandom.current().nextInt(1, 40 - rectangleSizeY);
-                System.out.println(counter);
-                counter++;
-            } while (isRectangleOverlapping(rectPosX, rectPosY, rectangleSizeX, rectangleSizeY));
 
+                tries++;
 
+            } while (isRectangleOverlapping(rectPosX, rectPosY, rectangleSizeX, rectangleSizeY)
+                    && tries <= maximumAmountOfTries);
 
-            drawRectangle(' ', rectPosX, rectPosY, rectangleSizeX, rectangleSizeY);
+            if (tries <= maximumAmountOfTries) {
+                drawRectangle(' ', rectPosX, rectPosY, rectangleSizeX, rectangleSizeY);
+            } else {
+                System.out.println("couldn't fit rectangle, tried " + maximumAmountOfTries + " times!");
+            }
         }
     }
 
