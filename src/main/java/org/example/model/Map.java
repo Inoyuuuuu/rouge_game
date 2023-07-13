@@ -29,16 +29,22 @@ public class Map {
     private void initMap() {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                 this.cells[i][j] = new Cell('#', CellType.BORDER);
+                 this.cells[i][j] = new Cell(' ', CellType.BORDER);
             }
         }
     }
 
-    private void drawRectangle(char character, int posX, int posY, int sizeX, int sizeY) {
+    private void drawRectangle(char chamberCharacter, char wallCharacter, int posX, int posY, int sizeX, int sizeY) {
         for (int i = posX; i < posX + sizeX; i++) {
             for (int j = posY; j < posY + sizeY; j++) {
-                cells[i][j].setContent(character);
-                cells[i][j].setCelltype(CellType.CHAMBER);
+
+                if (i == posX || i == posX + sizeX - 1 || j == posY || j == posY + sizeY - 1) {
+                    cells[i][j].setContent(wallCharacter);
+                    cells[i][j].setCelltype(CellType.WALL);
+                } else {
+                    cells[i][j].setContent(chamberCharacter);
+                    cells[i][j].setCelltype(CellType.CHAMBER);
+                }
             }
         }
     }
@@ -49,14 +55,14 @@ public class Map {
         int rectangleSizeY;
         int rectPosX;
         int rectPosY;
-        int maximumAmountOfTries = 15;
+        int maximumAmountOfTries = 20;
 
         for (int i = 0; i < amountOfRectangles; i++) {
             int tries = 0;
 
             do {
-                rectangleSizeX = ThreadLocalRandom.current().nextInt(5, 30);
-                rectangleSizeY = ThreadLocalRandom.current().nextInt(5, 20);
+                rectangleSizeX = ThreadLocalRandom.current().nextInt(8, 30);
+                rectangleSizeY = ThreadLocalRandom.current().nextInt(8, 20);
 
                 rectPosX  = ThreadLocalRandom.current().nextInt(1, 115 - rectangleSizeX);
                 rectPosY  = ThreadLocalRandom.current().nextInt(1, 40 - rectangleSizeY);
@@ -67,7 +73,7 @@ public class Map {
                     && tries <= maximumAmountOfTries);
 
             if (tries <= maximumAmountOfTries) {
-                drawRectangle(' ', rectPosX, rectPosY, rectangleSizeX, rectangleSizeY);
+                drawRectangle(' ', '#', rectPosX, rectPosY, rectangleSizeX, rectangleSizeY);
             } else {
                 System.out.println("couldn't fit rectangle, tried " + maximumAmountOfTries + " times!");
             }
@@ -75,12 +81,14 @@ public class Map {
     }
 
     public void initStartChamber(Player player) {
-        drawRectangle(' ', player.getPlayerPosX() - 5, player.getPlayerPosY() - 5,
+        drawRectangle(' ', '#',player.getPlayerPosX() - 5, player.getPlayerPosY() - 5,
                 10, 10);
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                cells[i + player.getPlayerPosX() - 5][j + player.getPlayerPosY() - 5].setCelltype(CellType.START_AREA);
+                if (cells[i + player.getPlayerPosX() - 5][j + player.getPlayerPosY() - 5].getCelltype() != CellType.WALL) {
+                    cells[i + player.getPlayerPosX() - 5][j + player.getPlayerPosY() - 5].setCelltype(CellType.START_AREA);
+                }
             }
         }
     }
