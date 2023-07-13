@@ -49,14 +49,14 @@ public class Map {
         int rectangleSizeY;
         int rectPosX;
         int rectPosY;
-        int maximumAmountOfTries = 10;
+        int maximumAmountOfTries = 15;
 
         for (int i = 0; i < amountOfRectangles; i++) {
             int tries = 0;
 
             do {
                 rectangleSizeX = ThreadLocalRandom.current().nextInt(5, 30);
-                rectangleSizeY = ThreadLocalRandom.current().nextInt(5, 30);
+                rectangleSizeY = ThreadLocalRandom.current().nextInt(5, 20);
 
                 rectPosX  = ThreadLocalRandom.current().nextInt(1, 115 - rectangleSizeX);
                 rectPosY  = ThreadLocalRandom.current().nextInt(1, 40 - rectangleSizeY);
