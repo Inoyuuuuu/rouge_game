@@ -3,6 +3,8 @@ package org.example.model;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Map {
+    private static final char EMPTY_BACKGROUND = ' ';
+    private static final char WALL_SYMBOL = '#';
     private final int height;
     private final int width;
     private final Cell[][] cells;
@@ -29,7 +31,7 @@ public class Map {
     private void initMap() {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                 this.cells[i][j] = new Cell(' ', CellType.BORDER);
+                 this.cells[i][j] = new Cell(EMPTY_BACKGROUND, CellType.BORDER);
             }
         }
     }
@@ -73,7 +75,7 @@ public class Map {
                     && tries <= maximumAmountOfTries);
 
             if (tries <= maximumAmountOfTries) {
-                drawRectangle(' ', '#', rectPosX, rectPosY, rectangleSizeX, rectangleSizeY);
+                drawRectangle(EMPTY_BACKGROUND, WALL_SYMBOL, rectPosX, rectPosY, rectangleSizeX, rectangleSizeY);
             } else {
                 System.out.println("couldn't fit rectangle, tried " + maximumAmountOfTries + " times!");
             }
@@ -81,7 +83,7 @@ public class Map {
     }
 
     public void initStartChamber(Player player) {
-        drawRectangle(' ', '#',player.getPlayerPosX() - 5, player.getPlayerPosY() - 5,
+        drawRectangle(EMPTY_BACKGROUND, WALL_SYMBOL,player.getPlayerPosX() - 5, player.getPlayerPosY() - 5,
                 10, 10);
 
         for (int i = 0; i < 10; i++) {
