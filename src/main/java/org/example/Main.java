@@ -18,10 +18,13 @@ public class Main {
      */
     public static void main(String[] args) throws InterruptedException {
 
-        Player player = new Player('@', 20, 20);
-        Map map = new Map(115, 40);
+        int gameWindowWidth = 120;
+        int gameWindowHeight = 40;
 
-        UserInterface ui = new UserInterface(115, 40);
+        Player player = new Player('@', 20, 20);
+        Map map = new Map(gameWindowWidth, gameWindowHeight);
+
+        UserInterface ui = new UserInterface(gameWindowWidth, gameWindowHeight);
         InputHandler inputHandler = new InputHandler(ui, player);
 
         map.initStartChamber(player);

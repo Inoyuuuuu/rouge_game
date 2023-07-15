@@ -28,8 +28,11 @@ public class UserInterface extends JFrame {
         this.widthInPixels = panel.getCharWidth() * this.width;
         this.heightInPixels = panel.getCharHeight() * this.height;
 
+        double formatWidth = (double) 100 / this.width;
+        double formatHeight = (double) 100 / this.height;
+
         super.add(this.panel);
-        super.setSize(this.widthInPixels, this.heightInPixels);
+        super.setSize((int) (this.widthInPixels + 15 * formatWidth), (int) (this.heightInPixels + 15 * formatHeight));
         super.setVisible(true);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.repaint();
