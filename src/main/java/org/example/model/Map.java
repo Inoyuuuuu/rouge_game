@@ -46,17 +46,17 @@ public class Map {
 
                 if (i == posX || i == posX + sizeX - 1 || j == posY || j == posY + sizeY - 1) {
                     cells[i][j].setContent(wallCharacter);
-                    cells[i][j].setCelltype(CellType.WALL);
+                    cells[i][j].setCellType(CellType.WALL);
                 } else {
                     cells[i][j].setContent(chamberCharacter);
-                    cells[i][j].setCelltype(CellType.CHAMBER);
+                    cells[i][j].setCellType(CellType.CHAMBER);
                 }
             }
         }
     }
 
     public void initRandomRectangles() {
-        int amountOfChambers = ThreadLocalRandom.current().nextInt(1, 2);
+        int amountOfChambers = ThreadLocalRandom.current().nextInt(8, 10);
         int chamberSizeX;
         int chamberSizeY;
         int chamberPosX;
@@ -94,10 +94,6 @@ public class Map {
     public void initPaths() {
         int amountOfChambers = chambers.size();
         Chamber currentChamber;
-        int startX = Integer.MIN_VALUE;
-        int startY = Integer.MIN_VALUE;
-        int targetX = Integer.MIN_VALUE;
-        int targetY = Integer.MIN_VALUE;
 
         for (int i = 0; i < amountOfChambers; i++) {
             currentChamber = chambers.get(i);
@@ -107,20 +103,33 @@ public class Map {
                 for (int k = 0; k < height; k++) {
                     Cell targetCell = cells[currentChamber.getPositionX() + currentChamber.getWidth() / 2][k];
 
-                    if (targetCell.getBelongsToChamberNumber() == 0) {
-                        targetCell.setCelltype(CellType.START_AREA);
-                    }
+
+
 
                     if (targetCell.getCelltype() == CellType.WALL) {
                         if (targetCell.getBelongsToChamberNumber() != currentChamber.getChamberNumber()) {
-                            currentChamber.setConnected(true);
+
+                            for (int j = k; j >= 0; j--) {
+                                targetCell = cells[currentChamber.getPositionX() + currentChamber.getWidth() / 2][j];
+
+                                if (targetCell.getCelltype() == CellType.DOOR
+                                        && targetCell.getBelongsToChamberNumber() == currentChamber.getChamberNumber()) {
+                                    currentChamber.setConnected(true);
+                                    break;
+                                } else {
+                                    if (targetCell.getBelongsToChamberNumber() == 0) {
+                                        targetCell.setCellType(CellType.PATH);
+                                    }
+                                }
+                            }
+
                         } else {
-                            targetCell.setCelltype(CellType.DOOR);
+                            targetCell.setCellType(CellType.DOOR);
                         }
                     }
                 }
 
-                for (int k = 0; k < width - currentChamber.getWidth(); k++) {
+                /*for (int k = 0; k < width - currentChamber.getWidth(); k++) {
                     Cell targetCell = cells[currentChamber.getWidth() + k][currentChamber.getPositionY() + currentChamber.getHeight() / 2];
 
                     if (targetCell.getBelongsToChamberNumber() == 0) {
@@ -134,18 +143,15 @@ public class Map {
                             targetCell.setCelltype(CellType.DOOR);
                         }
                     }
-                }
+                }*/
+
             //drawPath(startX, startY, targetX, targetY);
         }
         //}
     }
 
-    private void drawPath(int startX, int startY, int targetX, int targetY) {
-        if (startX == Integer.MIN_VALUE || startY == Integer.MIN_VALUE
-                || targetX  == Integer.MIN_VALUE || targetY == Integer.MIN_VALUE) {
-            System.out.println("ERROR");
-        } else {
-        }
+    private void drawPathColumn(int startY, int targetX, int targetY, Chamber currentChamber, Cell targetCell) {
+
     }
 
     public void initStartChamber(Player player) {
@@ -158,7 +164,7 @@ public class Map {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 if (cells[i + player.getPositionX() - 5][j + player.getPositionY() - 5].getCelltype() != CellType.WALL) {
-                    cells[i + player.getPositionX() - 5][j + player.getPositionY() - 5].setCelltype(CellType.START_AREA);
+                    cells[i + player.getPositionX() - 5][j + player.getPositionY() - 5].setCellType(CellType.START_AREA);
                 }
             }
         }

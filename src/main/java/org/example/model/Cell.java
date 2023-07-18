@@ -23,7 +23,7 @@ public class Cell {
         return celltype;
     }
 
-    public void setCelltype(CellType celltype) {
+    public void setCellType(CellType celltype) {
         this.celltype = celltype;
     }
 

@@ -6,5 +6,6 @@ public enum CellType {
     START_AREA,
     WALL,
     BORDER,
-    DOOR
+    DOOR,
+    PATH
 }
