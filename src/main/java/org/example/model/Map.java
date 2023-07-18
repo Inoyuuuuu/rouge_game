@@ -33,14 +33,15 @@ public class Map {
     private void initMap() {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                 this.cells[i][j] = new Cell(EMPTY_BACKGROUND, CellType.BORDER);
+                 this.cells[i][j] = new Cell(EMPTY_BACKGROUND, CellType.BORDER, 0);
             }
         }
     }
 
-    private void drawRectangle(char chamberCharacter, char wallCharacter, int posX, int posY, int sizeX, int sizeY) {
+    private void drawChamber(char chamberCharacter, char wallCharacter, int posX, int posY, int sizeX, int sizeY, int chamberNumber) {
         for (int i = posX; i < posX + sizeX; i++) {
             for (int j = posY; j < posY + sizeY; j++) {
+
 
                 if (i == posX || i == posX + sizeX - 1 || j == posY || j == posY + sizeY - 1) {
                     cells[i][j].setContent(wallCharacter);
@@ -54,32 +55,34 @@ public class Map {
     }
 
     public void initRandomRectangles() {
-        int amountOfRectangles = ThreadLocalRandom.current().nextInt(10, 15);
-        int rectangleSizeX;
-        int rectangleSizeY;
-        int rectPosX;
-        int rectPosY;
+        int amountOfChambers = ThreadLocalRandom.current().nextInt(10, 15);
+        int chamberSizeX;
+        int chamberSizeY;
+        int chamberPosX;
+        int chamberPosY;
         int maximumAmountOfTries = 50;
+        int chamberDistance = 2;
 
-        for (int i = 0; i < amountOfRectangles; i++) {
+        for (int i = 0; i < amountOfChambers; i++) {
             int tries = 0;
-            int rectangleDistance = 2;
 
             do {
-                rectangleSizeX = ThreadLocalRandom.current().nextInt(10, 30);
-                rectangleSizeY = ThreadLocalRandom.current().nextInt(10, 15);
+                chamberSizeX = ThreadLocalRandom.current().nextInt(10, 30);
+                chamberSizeY = ThreadLocalRandom.current().nextInt(10, 15);
 
-                rectPosX  = ThreadLocalRandom.current().nextInt(rectangleDistance, 115 - rectangleSizeX - rectangleDistance);
-                rectPosY  = ThreadLocalRandom.current().nextInt(rectangleDistance, 40 - rectangleSizeY - rectangleDistance);
+                chamberPosX  = ThreadLocalRandom.current().nextInt(chamberDistance, 115 - chamberSizeX - chamberDistance);
+                chamberPosY  = ThreadLocalRandom.current().nextInt(chamberDistance, 40 - chamberSizeY - chamberDistance);
 
                 tries++;
 
-            } while (isRectangleOverlapping(rectPosX, rectPosY, rectangleSizeX, rectangleSizeY, rectangleDistance)
+            } while (isRectangleOverlapping(chamberPosX, chamberPosY, chamberSizeX, chamberSizeY, chamberDistance)
                     && tries <= maximumAmountOfTries);
 
             if (tries <= maximumAmountOfTries) {
-                drawRectangle(EMPTY_BACKGROUND, WALL_SYMBOL, rectPosX, rectPosY, rectangleSizeX, rectangleSizeY);
-                chambers.add(new Chamber(rectPosX, rectPosY, rectangleSizeX, rectangleSizeY));
+
+                chambers.add(new Chamber(chamberPosX, chamberPosY, chamberSizeX, chamberSizeY));
+                drawChamber(EMPTY_BACKGROUND, WALL_SYMBOL, chamberPosX, chamberPosY, chamberSizeX, chamberSizeY,
+                        chambers.getLast().getChamberNumber());
 
             } else {
                 System.out.println("couldn't fit rectangle, tried " + maximumAmountOfTries + " times!");
@@ -90,26 +93,50 @@ public class Map {
     public void initPaths() {
         int amountOfChambers = chambers.size();
         Chamber currentChamber;
+        int counter;
 
         for (int i = 0; i < amountOfChambers; i++) {
+            counter = 0;
             currentChamber = chambers.get(i);
 
             while(!currentChamber.isConnected()) {
+                counter++;
 
-                for (int k = 0; k < height - currentChamber.getPositionY(); k++) {
-                    if (cells[currentChamber.getPositionX() + currentChamber.getWidth() / 2][currentChamber.getPositionY() + k].getCelltype() == CellType.WALL) {
+                for (int k = 0; k < height - currentChamber.getPositionY() - 1; k++) {
+                    Cell targetCell = cells[currentChamber.getPositionX() + currentChamber.getWidth() / 2][currentChamber.getPositionY() + 1 + k];
 
-                        cells[currentChamber.getPositionX() + currentChamber.getWidth() / 2][currentChamber.getPositionY() + k].setCelltype(CellType.START_AREA);
+                    if (targetCell.getCelltype() == CellType.WALL) {
                         currentChamber.setConnected(true);
+                        break;
                     }
+
+                    targetCell.setCelltype(CellType.START_AREA);
+                }
+
+                for (int k = 0; k < width - currentChamber.getPositionX() - 1; k++) {
+                    Cell targetCell = cells[currentChamber.getPositionX() + 1 + k][currentChamber.getPositionY() + currentChamber.getHeight() / 2];
+
+                    if (targetCell.getCelltype() == CellType.WALL) {
+                        currentChamber.setConnected(true);
+                        break;
+                    }
+
+                    targetCell.setCelltype(CellType.START_AREA);
+                }
+
+                if (counter >= 500) {
+                    return;
                 }
             }
         }
     }
 
     public void initStartChamber(Player player) {
-        drawRectangle(EMPTY_BACKGROUND, WALL_SYMBOL,player.getPositionX() - 5, player.getPositionY() - 5,
-                10, 10);
+        chambers.add(new Chamber(player.getPositionX() - 5, player.getPositionY() - 5,
+                10, 10));
+
+        drawChamber(EMPTY_BACKGROUND, WALL_SYMBOL,player.getPositionX() - 5, player.getPositionY() - 5,
+                10, 10, chambers.getLast().getChamberNumber());
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
@@ -118,8 +145,6 @@ public class Map {
                 }
             }
         }
-        chambers.add(new Chamber(player.getPositionX() - 5, player.getPositionY() - 5,
-                10, 10));
     }
 
     private boolean isRectangleOverlapping(int posX, int posY, int sizeX, int sizeY, int rectangleDistance) {
@@ -134,5 +159,16 @@ public class Map {
             }
         }
         return false;
+    }
+
+    private Chamber getChamberByChamberNumber(int number) {
+        if (!chambers.isEmpty()) {
+            for (Chamber chamber : chambers) {
+                if (chamber.getChamberNumber() == number) {
+                    return chamber;
+                }
+            }
+        }
+        return null;
     }
 }

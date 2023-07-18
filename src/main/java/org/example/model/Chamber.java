@@ -1,7 +1,7 @@
 package org.example.model;
 
 public class Chamber {
-    private static int chamberCounter = 0;
+    private static int chamberCounter = 1;
     private final int chamberNumber;
     private final int positionX;
     private final int positionY;
