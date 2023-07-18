@@ -42,6 +42,7 @@ public class Map {
         for (int i = posX; i < posX + sizeX; i++) {
             for (int j = posY; j < posY + sizeY; j++) {
 
+                cells[i][j].setBelongsToChamberNumber(chamberNumber);
 
                 if (i == posX || i == posX + sizeX - 1 || j == posY || j == posY + sizeY - 1) {
                     cells[i][j].setContent(wallCharacter);
@@ -102,26 +103,32 @@ public class Map {
             while(!currentChamber.isConnected()) {
                 counter++;
 
-                for (int k = 0; k < height - currentChamber.getPositionY() - 1; k++) {
-                    Cell targetCell = cells[currentChamber.getPositionX() + currentChamber.getWidth() / 2][currentChamber.getPositionY() + 1 + k];
+                for (int k = 0; k < height; k++) {
+                    Cell targetCell = cells[currentChamber.getPositionX() + currentChamber.getWidth() / 2][k];
 
-                    if (targetCell.getCelltype() == CellType.WALL) {
-                        currentChamber.setConnected(true);
-                        break;
+                    if (targetCell.getBelongsToChamberNumber() == 0) {
+
+                        targetCell.setCelltype(CellType.START_AREA);
                     }
 
-                    targetCell.setCelltype(CellType.START_AREA);
+                    if (targetCell.getCelltype() == CellType.WALL) {
+
+                        currentChamber.setConnected(true);
+                    }
                 }
 
                 for (int k = 0; k < width - currentChamber.getPositionX() - 1; k++) {
                     Cell targetCell = cells[currentChamber.getPositionX() + 1 + k][currentChamber.getPositionY() + currentChamber.getHeight() / 2];
 
-                    if (targetCell.getCelltype() == CellType.WALL) {
-                        currentChamber.setConnected(true);
-                        break;
+                    if (targetCell.getBelongsToChamberNumber() == 0) {
+
+                        targetCell.setCelltype(CellType.START_AREA);
                     }
 
-                    targetCell.setCelltype(CellType.START_AREA);
+                    if (targetCell.getCelltype() == CellType.WALL) {
+
+                        currentChamber.setConnected(true);
+                    }
                 }
 
                 if (counter >= 500) {

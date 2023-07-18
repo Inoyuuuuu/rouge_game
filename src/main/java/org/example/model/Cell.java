@@ -2,7 +2,7 @@ package org.example.model;
 
 public class Cell {
     private char content;
-    private final int belongsToChamberNumber;
+    private int belongsToChamberNumber;
     private CellType celltype;
 
     public Cell(char content, CellType celltype, int belongsToChamberNumber) {
@@ -29,5 +29,9 @@ public class Cell {
 
     public int getBelongsToChamberNumber() {
         return belongsToChamberNumber;
+    }
+
+    public void setBelongsToChamberNumber(int belongsToChamberNumber) {
+        this.belongsToChamberNumber = belongsToChamberNumber;
     }
 }
