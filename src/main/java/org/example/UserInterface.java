@@ -87,7 +87,7 @@ public class UserInterface extends JFrame {
                     panel.write('X', x, y, Color.CYAN);
                 }
                 if (map.getCells()[x][y].getCelltype() == CellType.PATH) {
-                    panel.write('X', x, y, Color.MAGENTA);
+                    panel.write('*', x, y, Color.MAGENTA);
                 }
 
             }
