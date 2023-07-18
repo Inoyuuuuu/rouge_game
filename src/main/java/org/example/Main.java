@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.model.CellType;
 import org.example.model.Map;
 import org.example.model.Player;
 
@@ -35,19 +36,28 @@ public class Main {
         //main loop
         while (!inputHandler.wasEscapePressed()) {
 
-            int nextPosX = player.getPlayerPosX();
-            int nextPosY = player.getPlayerPosY();
+            player.setPreviousPositionX(player.getPositionX());
+            player.setPreviousPositionY(player.getPositionY());
+
+            int nextPosX = inputHandler.getUpdatedPlayerPositionX();
+            int nextPosY = inputHandler.getUpdatedPlayerPositionY();
 
             //wall detection
-            if (ui.isOutOfBounds(nextPosX, nextPosY)
-                    || ui.getCharCharOfPosition(nextPosX, nextPosY).character == '#') {
+            if (!ui.isOutOfBounds(nextPosX, nextPosY)
+                    && map.getCells()[nextPosX][nextPosY].getCelltype() != CellType.WALL) {
 
-                player.setPlayerPosX(player.getPreviousPlayerPosX());
-                player.setPlayerPosY(player.getPreviousPlayerPosY());
+                player.setPositionX(nextPosX);
+                player.setPositionY(nextPosY);
+
+            } else {
+
+                //reset position
+                inputHandler.setUpdatedPlayerPositionX(player.getPreviousPositionX());
+                inputHandler.setUpdatedPlayerPositionY(player.getPreviousPositionY());
             }
 
             //print player + surroundings in console
-            print3x3field(player.getPlayerPosX(), player.getPlayerPosY(), ui);
+            print3x3field(player.getPositionX(), player.getPositionY(), ui);
 
             //draw player
             ui.drawPlayer(player);

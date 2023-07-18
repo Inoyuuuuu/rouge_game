@@ -83,13 +83,13 @@ public class Map {
     }
 
     public void initStartChamber(Player player) {
-        drawRectangle(EMPTY_BACKGROUND, WALL_SYMBOL,player.getPlayerPosX() - 5, player.getPlayerPosY() - 5,
+        drawRectangle(EMPTY_BACKGROUND, WALL_SYMBOL,player.getPositionX() - 5, player.getPositionY() - 5,
                 10, 10);
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                if (cells[i + player.getPlayerPosX() - 5][j + player.getPlayerPosY() - 5].getCelltype() != CellType.WALL) {
-                    cells[i + player.getPlayerPosX() - 5][j + player.getPlayerPosY() - 5].setCelltype(CellType.START_AREA);
+                if (cells[i + player.getPositionX() - 5][j + player.getPositionY() - 5].getCelltype() != CellType.WALL) {
+                    cells[i + player.getPositionX() - 5][j + player.getPositionY() - 5].setCelltype(CellType.START_AREA);
                 }
             }
         }

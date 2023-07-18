@@ -2,53 +2,53 @@ package org.example.model;
 
 public class Player {
     private final char playerSymbol;
-    private int playerPosX;
-    private int playerPosY;
-    private int previousPlayerPosX;
-    private int previousPlayerPosY;
+    private int positionX;
+    private int positionY;
+    private int previousPositionX;
+    private int previousPositionY;
 
     public Player(char playerSymbol, int initPlayerPosX, int initPlayerPosY) {
         this.playerSymbol = playerSymbol;
-        this.playerPosX = initPlayerPosX;
-        this.playerPosY = initPlayerPosY;
+        this.positionX = initPlayerPosX;
+        this.positionY = initPlayerPosY;
 
-        this.previousPlayerPosX = playerPosX;
-        this.previousPlayerPosY = playerPosY;
+        this.previousPositionX = positionX;
+        this.previousPositionY = positionY;
     }
 
     public char getPlayerSymbol() {
         return this.playerSymbol;
     }
 
-    public int getPlayerPosX() {
-        return playerPosX;
+    public int getPositionX() {
+        return positionX;
     }
 
-    public void setPlayerPosX(int playerPosX) {
-        this.playerPosX = playerPosX;
+    public void setPositionX(int positionX) {
+        this.positionX = positionX;
     }
 
-    public int getPlayerPosY() {
-        return playerPosY;
+    public int getPositionY() {
+        return positionY;
     }
 
-    public void setPlayerPosY(int playerPosY) {
-        this.playerPosY = playerPosY;
+    public void setPositionY(int positionY) {
+        this.positionY = positionY;
     }
 
-    public int getPreviousPlayerPosX() {
-        return previousPlayerPosX;
+    public int getPreviousPositionX() {
+        return previousPositionX;
     }
 
-    public void setPreviousPlayerPosX(int previousPlayerPosX) {
-        this.previousPlayerPosX = previousPlayerPosX;
+    public void setPreviousPositionX(int previousPositionX) {
+        this.previousPositionX = previousPositionX;
     }
 
-    public int getPreviousPlayerPosY() {
-        return previousPlayerPosY;
+    public int getPreviousPositionY() {
+        return previousPositionY;
     }
 
-    public void setPreviousPlayerPosY(int previousPlayerPosY) {
-        this.previousPlayerPosY = previousPlayerPosY;
+    public void setPreviousPositionY(int previousPositionY) {
+        this.previousPositionY = previousPositionY;
     }
 }

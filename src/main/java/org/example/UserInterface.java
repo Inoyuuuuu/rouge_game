@@ -63,8 +63,8 @@ public class UserInterface extends JFrame {
 
     //overwrite previous position and write player symbol at new position
     public void drawPlayer(Player player) {
-        panel.write(' ', player.getPreviousPlayerPosX(), player.getPreviousPlayerPosY());
-        panel.write(player.getPlayerSymbol(), player.getPlayerPosX(), player.getPlayerPosY());
+        panel.clear(' ', player.getPreviousPositionX(), player.getPreviousPositionY(), 1, 1);
+        panel.write(player.getPlayerSymbol(), player.getPositionX(), player.getPositionY());
 
         refresh();
     }
@@ -74,11 +74,11 @@ public class UserInterface extends JFrame {
             for (int y = 0; y < map.getHeight(); y++) {
                     panel.write(map.getCells()[x][y].getContent(), x, y);
 
-                    if (map.getCells()[x][y].getCelltype() == CellType.START_AREA) {
-                        panel.write('.', x, y, Color.GREEN);
-                    } else if (map.getCells()[x][y].getCelltype() == CellType.CHAMBER) {
-                        panel.write('.', x, y, Color.RED);
-                    }
+                if (map.getCells()[x][y].getCelltype() == CellType.START_AREA) {
+                    panel.write('.', x, y, Color.GREEN);
+                } else if (map.getCells()[x][y].getCelltype() == CellType.CHAMBER) {
+                    panel.write('.', x, y, Color.RED);
+                }
             }
         }
         refresh();
