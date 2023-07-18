@@ -66,8 +66,8 @@ public class Map {
             int rectangleDistance = 2;
 
             do {
-                rectangleSizeX = ThreadLocalRandom.current().nextInt(8, 30);
-                rectangleSizeY = ThreadLocalRandom.current().nextInt(8, 15);
+                rectangleSizeX = ThreadLocalRandom.current().nextInt(10, 30);
+                rectangleSizeY = ThreadLocalRandom.current().nextInt(10, 15);
 
                 rectPosX  = ThreadLocalRandom.current().nextInt(rectangleDistance, 115 - rectangleSizeX - rectangleDistance);
                 rectPosY  = ThreadLocalRandom.current().nextInt(rectangleDistance, 40 - rectangleSizeY - rectangleDistance);
@@ -91,22 +91,20 @@ public class Map {
         int amountOfChambers = chambers.size();
         Chamber currentChamber;
 
-        /*for (int i = 0; i < amountOfChambers; i++) {
+        for (int i = 0; i < amountOfChambers; i++) {
             currentChamber = chambers.get(i);
 
             while(!currentChamber.isConnected()) {
 
                 for (int k = 0; k < height - currentChamber.getPositionY(); k++) {
-                    if (cells[currentChamber.getWidth() / 2][currentChamber.getPositionX() + k].getCelltype() == CellType.WALL) {
-                        cells
-                    }
+                    if (cells[currentChamber.getPositionX() + currentChamber.getWidth() / 2][currentChamber.getPositionY() + k].getCelltype() == CellType.WALL) {
 
-                    cells[currentChamber.getWidth() / 2]
-                            [currentChamber.getPositionY() + k].setCelltype(CellType.CHAMBER);
-                     currentChamber.setConnected(true);
+                        cells[currentChamber.getPositionX() + currentChamber.getWidth() / 2][currentChamber.getPositionY() + k].setCelltype(CellType.START_AREA);
+                        currentChamber.setConnected(true);
+                    }
                 }
             }
-        }*/
+        }
     }
 
     public void initStartChamber(Player player) {
