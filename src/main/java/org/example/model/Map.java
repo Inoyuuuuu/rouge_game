@@ -56,7 +56,7 @@ public class Map {
     }
 
     public void initRandomRectangles() {
-        int amountOfChambers = ThreadLocalRandom.current().nextInt(10, 15);
+        int amountOfChambers = ThreadLocalRandom.current().nextInt(1, 2);
         int chamberSizeX;
         int chamberSizeY;
         int chamberPosX;
@@ -94,47 +94,57 @@ public class Map {
     public void initPaths() {
         int amountOfChambers = chambers.size();
         Chamber currentChamber;
-        int counter;
+        int startX = Integer.MIN_VALUE;
+        int startY = Integer.MIN_VALUE;
+        int targetX = Integer.MIN_VALUE;
+        int targetY = Integer.MIN_VALUE;
 
         for (int i = 0; i < amountOfChambers; i++) {
-            counter = 0;
             currentChamber = chambers.get(i);
 
-            while(!currentChamber.isConnected()) {
-                counter++;
+            //while(!currentChamber.isConnected()) {
 
                 for (int k = 0; k < height; k++) {
                     Cell targetCell = cells[currentChamber.getPositionX() + currentChamber.getWidth() / 2][k];
 
                     if (targetCell.getBelongsToChamberNumber() == 0) {
-
                         targetCell.setCelltype(CellType.START_AREA);
                     }
 
                     if (targetCell.getCelltype() == CellType.WALL) {
-
-                        currentChamber.setConnected(true);
+                        if (targetCell.getBelongsToChamberNumber() != currentChamber.getChamberNumber()) {
+                            currentChamber.setConnected(true);
+                        } else {
+                            targetCell.setCelltype(CellType.DOOR);
+                        }
                     }
                 }
 
-                for (int k = 0; k < width - currentChamber.getPositionX() - 1; k++) {
-                    Cell targetCell = cells[currentChamber.getPositionX() + 1 + k][currentChamber.getPositionY() + currentChamber.getHeight() / 2];
+                for (int k = 0; k < width - currentChamber.getWidth(); k++) {
+                    Cell targetCell = cells[currentChamber.getWidth() + k][currentChamber.getPositionY() + currentChamber.getHeight() / 2];
 
                     if (targetCell.getBelongsToChamberNumber() == 0) {
-
                         targetCell.setCelltype(CellType.START_AREA);
                     }
 
                     if (targetCell.getCelltype() == CellType.WALL) {
-
-                        currentChamber.setConnected(true);
+                        if (targetCell.getBelongsToChamberNumber() != currentChamber.getChamberNumber()) {
+                            currentChamber.setConnected(true);
+                        } else {
+                            targetCell.setCelltype(CellType.DOOR);
+                        }
                     }
                 }
+            //drawPath(startX, startY, targetX, targetY);
+        }
+        //}
+    }
 
-                if (counter >= 500) {
-                    return;
-                }
-            }
+    private void drawPath(int startX, int startY, int targetX, int targetY) {
+        if (startX == Integer.MIN_VALUE || startY == Integer.MIN_VALUE
+                || targetX  == Integer.MIN_VALUE || targetY == Integer.MIN_VALUE) {
+            System.out.println("ERROR");
+        } else {
         }
     }
 

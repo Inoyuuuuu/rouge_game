@@ -5,5 +5,6 @@ public enum CellType {
     CHAMBER,
     START_AREA,
     WALL,
-    BORDER
+    BORDER,
+    DOOR
 }
