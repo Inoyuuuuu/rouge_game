@@ -89,7 +89,9 @@ public class UserInterface extends JFrame {
                 if (map.getCells()[x][y].getCelltype() == CellType.PATH) {
                     panel.write('*', x, y, Color.MAGENTA);
                 }
-
+                if (map.getCells()[x][y].getCelltype() == CellType.BACKGROUND) {
+                    panel.clear(' ', x, y, 1, 1);
+                }
             }
         }
         refresh();

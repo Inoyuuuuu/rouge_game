@@ -98,52 +98,61 @@ public class Map {
         for (int i = 0; i < chambers.size(); i++) {
             currentChamber = chambers.get(i);
 
-            for (int j = 0; j < height; j++) {
-                int[] topMidOfChamber = new int[2];
-                topMidOfChamber[0] = currentChamber.getPositionX() + currentChamber.getWidth() / 2;
-                topMidOfChamber[1] = currentChamber.getPositionY();
+            int[] topMidOfChamber = new int[2];
+            topMidOfChamber[0] = currentChamber.getPositionX() + currentChamber.getWidth() / 2;
+            topMidOfChamber[1] = currentChamber.getPositionY();
 
-                int[] botMidOfChamber = new int[2];
-                botMidOfChamber[0] = currentChamber.getPositionX() + currentChamber.getWidth() / 2;
-                botMidOfChamber[1] = currentChamber.getPositionY() + currentChamber.getHeight() - 1;
+            int[] botMidOfChamber = new int[2];
+            botMidOfChamber[0] = currentChamber.getPositionX() + currentChamber.getWidth() / 2;
+            botMidOfChamber[1] = currentChamber.getPositionY() + currentChamber.getHeight() - 1;
 
-                int[] rightMidOfChamber = new int[2];
-                rightMidOfChamber[0] = currentChamber.getPositionX() + currentChamber.getWidth() - 1;
-                rightMidOfChamber[1] = currentChamber.getPositionY() + currentChamber.getHeight() / 2;
+            int[] rightMidOfChamber = new int[2];
+            rightMidOfChamber[0] = currentChamber.getPositionX() + currentChamber.getWidth() - 1;
+            rightMidOfChamber[1] = currentChamber.getPositionY() + currentChamber.getHeight() / 2;
 
-                int[] leftMidOfChamber = new int[2];
-                leftMidOfChamber[0] = currentChamber.getPositionX();
-                leftMidOfChamber[1] = currentChamber.getPositionY() + currentChamber.getHeight() / 2;
+            int[] leftMidOfChamber = new int[2];
+            leftMidOfChamber[0] = currentChamber.getPositionX();
+            leftMidOfChamber[1] = currentChamber.getPositionY() + currentChamber.getHeight() / 2;
 
-                cells[topMidOfChamber[0]][topMidOfChamber[1]].setCellType(CellType.DOOR);
-                cells[botMidOfChamber[0]][botMidOfChamber[1]].setCellType(CellType.DOOR);
-                cells[rightMidOfChamber[0]][rightMidOfChamber[1]].setCellType(CellType.DOOR);
-                cells[leftMidOfChamber[0]][leftMidOfChamber[1]].setCellType(CellType.DOOR);
+            cells[topMidOfChamber[0]][topMidOfChamber[1]].setCellType(CellType.DOOR);
+            cells[botMidOfChamber[0]][botMidOfChamber[1]].setCellType(CellType.DOOR);
+            cells[rightMidOfChamber[0]][rightMidOfChamber[1]].setCellType(CellType.DOOR);
+            cells[leftMidOfChamber[0]][leftMidOfChamber[1]].setCellType(CellType.DOOR);
 
-                for (int k = 0; k < topMidOfChamber[1]; k++) {
-                    if (cells[topMidOfChamber[0]][k].getBelongsToChamberNumber() == 0) {
-                        cells[topMidOfChamber[0]][k].setCellType(CellType.PATH);
+            for (int k = topMidOfChamber[1] - 1; k >= 0; k--) {
+                if (cells[topMidOfChamber[0]][k].getBelongsToChamberNumber() == 0) {
+                    cells[topMidOfChamber[0]][k].setCellType(CellType.PATH);
+                    if (k == 0) {
+                        for (int j = 0; j < topMidOfChamber[1]; j++) {
+                            cells[topMidOfChamber[0]][j].setCellType(CellType.BACKGROUND);
+                        }
                     }
-                }
 
-                for (int k = height - 1; k > botMidOfChamber[1]; k--) {
-                    if (cells[botMidOfChamber[0]][k].getBelongsToChamberNumber() == 0) {
-                        cells[botMidOfChamber[0]][k].setCellType(CellType.PATH);
+                } else {
+                    if (!getChamberByChamberNumber(cells[topMidOfChamber[0]][k].getBelongsToChamberNumber()).isConnected()) {
+                        getChamberByChamberNumber(cells[topMidOfChamber[0]][k].getBelongsToChamberNumber()).setConnected(true);
                     }
-                }
-
-                for (int k = 0; k < leftMidOfChamber[0]; k++) {
-                    if (cells[k][leftMidOfChamber[1]].getBelongsToChamberNumber() == 0) {
-                        cells[k][leftMidOfChamber[1]].setCellType(CellType.PATH);
-                    }
-                }
-
-                for (int k = width - 1; k > rightMidOfChamber[0]; k--) {
-                    if (cells[k][rightMidOfChamber[1]].getBelongsToChamberNumber() == 0) {
-                        cells[k][rightMidOfChamber[1]].setCellType(CellType.PATH);
-                    }
+                    break;
                 }
             }
+
+           /* for (int k = height - 1; k > botMidOfChamber[1]; k--) {
+                if (cells[botMidOfChamber[0]][k].getBelongsToChamberNumber() == 0) {
+                    cells[botMidOfChamber[0]][k].setCellType(CellType.PATH);
+                }
+            }
+
+            for (int k = 0; k < leftMidOfChamber[0]; k++) {
+                if (cells[k][leftMidOfChamber[1]].getBelongsToChamberNumber() == 0) {
+                    cells[k][leftMidOfChamber[1]].setCellType(CellType.PATH);
+                }
+            }
+
+            for (int k = width - 1; k > rightMidOfChamber[0]; k--) {
+                if (cells[k][rightMidOfChamber[1]].getBelongsToChamberNumber() == 0) {
+                    cells[k][rightMidOfChamber[1]].setCellType(CellType.PATH);
+                }
+            }*/
         }
     }
 
