@@ -44,13 +44,12 @@ public class Map {
             for (int j = posY; j < posY + sizeY; j++) {
 
                 cells[i][j].setBelongsToChamberNumber(chamberNumber);
+                cells[i][j].setContent(chamberCharacter);
+                cells[i][j].setCellType(CellType.CHAMBER);
 
                 if (i == posX || i == posX + sizeX - 1 || j == posY || j == posY + sizeY - 1) {
                     cells[i][j].setContent(wallCharacter);
                     cells[i][j].setCellType(CellType.WALL);
-                } else {
-                    cells[i][j].setContent(chamberCharacter);
-                    cells[i][j].setCellType(CellType.CHAMBER);
                 }
             }
         }
@@ -123,26 +122,46 @@ public class Map {
                 if (cells[topMidOfChamber[0]][k].getBelongsToChamberNumber() == 0) {
                     cells[topMidOfChamber[0]][k].setCellType(CellType.PATH);
                     if (k == 0) {
-                        for (int j = 0; j < topMidOfChamber[1]; j++) {
+                        for (int j = k; j < topMidOfChamber[1]; j++) {
                             cells[topMidOfChamber[0]][j].setCellType(CellType.BACKGROUND);
                         }
                     }
-
                 } else {
                     if (!getChamberByChamberNumber(cells[topMidOfChamber[0]][k].getBelongsToChamberNumber()).isConnected()) {
+                        chambers.get(i).setConnected(true);
                         getChamberByChamberNumber(cells[topMidOfChamber[0]][k].getBelongsToChamberNumber()).setConnected(true);
+                    } else {
+                        for (int j = k + 1; j < topMidOfChamber[1]; j++) {
+                            cells[topMidOfChamber[0]][j].setCellType(CellType.FLOOR);
+                        }
                     }
                     break;
                 }
             }
 
-           /* for (int k = height - 1; k > botMidOfChamber[1]; k--) {
+           for (int k = botMidOfChamber[1] + 1; k < height; k++) {
                 if (cells[botMidOfChamber[0]][k].getBelongsToChamberNumber() == 0) {
                     cells[botMidOfChamber[0]][k].setCellType(CellType.PATH);
+
+                    if (k == height - 1) {
+                        for (int j = k; j > botMidOfChamber[1]; j--) {
+                            cells[botMidOfChamber[0]][j].setCellType(CellType.BACKGROUND);
+                        }
+                    }
+                } else {
+                    if (!getChamberByChamberNumber(cells[botMidOfChamber[0]][k].getBelongsToChamberNumber()).isConnected()) {
+                        chambers.get(i).setConnected(true);
+                        getChamberByChamberNumber(cells[botMidOfChamber[0]][k].getBelongsToChamberNumber()).setConnected(true);
+                    } else {
+                        for (int j = k - 1; j > botMidOfChamber[1]; j--) {
+                            cells[botMidOfChamber[0]][j].setCellType(CellType.FLOOR);
+                        }
+                    }
+                    break;
                 }
             }
 
-            for (int k = 0; k < leftMidOfChamber[0]; k++) {
+            /*for (int k = 0; k < leftMidOfChamber[0]; k++) {
                 if (cells[k][leftMidOfChamber[1]].getBelongsToChamberNumber() == 0) {
                     cells[k][leftMidOfChamber[1]].setCellType(CellType.PATH);
                 }
@@ -154,6 +173,7 @@ public class Map {
                 }
             }*/
         }
+        System.out.println(chambers.size());
     }
 
     private void drawPathColumn(int startY, int targetX, int targetY, Chamber currentChamber, Cell targetCell) {
