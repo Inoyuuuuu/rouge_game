@@ -132,7 +132,7 @@ public class Map {
                         getChamberByChamberNumber(cells[topMidOfChamber[0]][k].getBelongsToChamberNumber()).setConnected(true);
                     } else {
                         for (int j = k + 1; j < topMidOfChamber[1]; j++) {
-                            cells[topMidOfChamber[0]][j].setCellType(CellType.FLOOR);
+                            cells[topMidOfChamber[0]][j].setCellType(CellType.BACKGROUND);
                         }
                     }
                     break;
@@ -154,7 +154,7 @@ public class Map {
                         getChamberByChamberNumber(cells[botMidOfChamber[0]][k].getBelongsToChamberNumber()).setConnected(true);
                     } else {
                         for (int j = k - 1; j > botMidOfChamber[1]; j--) {
-                            cells[botMidOfChamber[0]][j].setCellType(CellType.FLOOR);
+                            cells[botMidOfChamber[0]][j].setCellType(CellType.BACKGROUND);
                         }
                     }
                     break;
