@@ -30,7 +30,6 @@ public class Main {
 
         map.initStartChamber(player);
         map.initRandomRectangles();
-        map.initPaths();
 
         ui.drawMap(map);
 
