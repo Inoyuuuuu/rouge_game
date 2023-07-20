@@ -79,6 +79,22 @@ public class UserInterface extends JFrame {
                 } else if (map.getCells()[x][y].getCelltype() == CellType.CHAMBER) {
                     panel.write('.', x, y, Color.RED);
                 }
+
+                if (map.getCells()[x][y].getCelltype() == CellType.DOOR) {
+                    panel.write('D', x, y, Color.YELLOW);
+                }
+                if (map.getCells()[x][y].getCelltype() == CellType.FLOOR) {
+                    panel.write('X', x, y, Color.CYAN);
+                }
+                if (map.getCells()[x][y].getCelltype() == CellType.PATH) {
+                    panel.write('*', x, y, Color.MAGENTA);
+                }
+                if (map.getCells()[x][y].getCelltype() == CellType.WALL) {
+                    panel.write('#', x, y, Color.WHITE);
+                }
+                if (map.getCells()[x][y].getCelltype() == CellType.BACKGROUND) {
+                    panel.clear(' ', x, y, 1, 1);
+                }
             }
         }
         refresh();
