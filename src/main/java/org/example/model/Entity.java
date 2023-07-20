@@ -1,25 +1,20 @@
 package org.example.model;
 
-public class Player extends Entity{
-    private final char playerSymbol;
+public class Entity {
+    private final char entitySymbol;
     private int positionX;
     private int positionY;
     private int previousPositionX;
     private int previousPositionY;
 
-    public Player(char playerSymbol, int initPlayerPosX, int initPlayerPosY) {
-        super(playerSymbol, initPlayerPosX, initPlayerPosY);
-
-        this.playerSymbol = playerSymbol;
-        this.positionX = initPlayerPosX;
-        this.positionY = initPlayerPosY;
-
-        this.previousPositionX = positionX;
-        this.previousPositionY = positionY;
+    public Entity(char entitySymbol, int positionX, int positionY) {
+        this.entitySymbol = entitySymbol;
+        this.positionX = positionX;
+        this.positionY = positionY;
     }
 
-    public char getPlayerSymbol() {
-        return this.playerSymbol;
+    public char getEntitySymbol() {
+        return entitySymbol;
     }
 
     public int getPositionX() {
