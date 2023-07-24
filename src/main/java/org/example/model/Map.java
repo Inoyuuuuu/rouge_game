@@ -1,5 +1,8 @@
 package org.example.model;
 
+import org.example.InputHandler;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
@@ -92,6 +95,7 @@ public class Map {
 
     public void initPaths() {
         Chamber currentChamber;
+        LinkedList<Path> paths = new LinkedList<>();
 
         //create doors
         for (int i = 0; i < chambers.size(); i++) {
@@ -109,6 +113,7 @@ public class Map {
 
                 int moveX = 0;
                 int currentX = chamberMid[0];
+                paths.add(new Path(chamberMid[0], chamberMid[1]));
 
                 if (chamberMid[0] - nextChamberMid[0] > 0){
                  moveX = -1;
@@ -122,10 +127,15 @@ public class Map {
                             || (cells[currentX][chamberMid[1]].getCelltype() == CellType.WALL
                             && cells[currentX][chamberMid[1]].getBelongsToChamberNumber() != 0)) {
 
-                        cells[currentX][chamberMid[1] - 1].setCellType(CellType.BACKGROUND);
+/*                      cells[currentX][chamberMid[1] - 1].setCellType(CellType.BACKGROUND);
                         cells[currentX][chamberMid[1] + 1].setCellType(CellType.BACKGROUND);
-
                         cells[currentX][chamberMid[1]].setCellType(CellType.BACKGROUND);
+                        */
+                        int[] currentCoordinates = new int[2];
+                        currentCoordinates[0] = currentX;
+                        currentCoordinates[1] = chamberMid[1];
+
+                        paths.getLast().getPathCoordinates().add(currentCoordinates);
                     }
                 }
                 if (cells[currentX][chamberMid[1]].getBelongsToChamberNumber() == 0
@@ -152,10 +162,22 @@ public class Map {
                             || (cells[currentX][currentY].getCelltype() == CellType.WALL
                             && cells[currentX][currentY].getBelongsToChamberNumber() != 0)) {
 
-                        cells[currentX + 1][currentY].setCellType(CellType.BACKGROUND);
+                        /*cells[currentX + 1][currentY].setCellType(CellType.BACKGROUND);
                         cells[currentX - 1][currentY].setCellType(CellType.BACKGROUND);
-                        cells[currentX][currentY].setCellType(CellType.BACKGROUND);
+                        cells[currentX][currentY].setCellType(CellType.BACKGROUND);*/
+
+                        int[] currentCoordinates = new int[2];
+                        currentCoordinates[0] = currentX;
+                        currentCoordinates[1] = currentY;
+
+                        paths.getLast().getPathCoordinates().add(currentCoordinates);
                     }
+                }
+
+                for (int j = 0; j < paths.getLast().getPathCoordinates().size(); j++) {
+                    int pathX = paths.getLast().getPathCoordinates().get(j)[0];
+                    int pathY = paths.getLast().getPathCoordinates().get(j)[1];
+                    cells[pathX][pathY].setCellType(CellType.BACKGROUND);
                 }
             }
         }
