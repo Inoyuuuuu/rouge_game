@@ -1,10 +1,10 @@
 package org.example;
 
-import org.example.model.CellType;
-import org.example.model.Map;
-import org.example.model.Player;
-import org.example.model.Rouge;
+import org.example.model.*;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -31,13 +31,12 @@ public class Main {
         Player player = rouge.getPlayer();
         Map map = rouge.getMap();
 
-        UserInterface ui = new UserInterface(gameWindowWidth, gameWindowHeight + statsBarHeight);
+        UserInterface ui = new UserInterface(gameWindowWidth, gameWindowHeight + statsBarHeight, statsBarHeight);
         InputHandler inputHandler = new InputHandler(ui, rouge.getPlayer());
 
         ui.drawMap(map);
         ui.drawBorder('X', statsBarHeight);
-        ui.initStatsBar(statsBarHeight, '=', '|', rouge.getPlayer().getLifePoints());
-
+        ui.initStatsBar('=', '|', rouge.getPlayer().getLifePoints());
 
         //main loop
         while (!inputHandler.wasEscapePressed()) {
@@ -62,21 +61,17 @@ public class Main {
                 inputHandler.setUpdatedPlayerPositionY(player.getPreviousPositionY());
             }
 
-            //print player + surroundings in console
-            print3x3field(player.getPositionX(), player.getPositionY(), ui);
-
-            //draw player
-            ui.drawPlayer(player);
-
             //move monsters
             for (int i = 0; i < rouge.getMonsters().size(); i++) {
                 boolean isMoveValid = false;
 
                 while (!isMoveValid) {
                     int nextMonsterPosX = rouge.getMonsters().get(i).getPositionX()
-                            + ThreadLocalRandom.current().nextInt(-1, 2);
+                            + ThreadLocalRandom.current().nextInt(-1, 2)
+                            * ThreadLocalRandom.current().nextInt(0, 2);
                     int nextMonsterPosY = rouge.getMonsters().get(i).getPositionY()
-                            + ThreadLocalRandom.current().nextInt(-1, 2);
+                            + ThreadLocalRandom.current().nextInt(-1, 2)
+                            * ThreadLocalRandom.current().nextInt(0, 2);
 
                     if (map.getCells()[nextMonsterPosX][nextMonsterPosY].getCelltype() == CellType.CHAMBER) {
 
@@ -85,13 +80,20 @@ public class Main {
 
                         rouge.getMonsters().get(i).setPositionX(nextMonsterPosX);
                         rouge.getMonsters().get(i).setPositionY(nextMonsterPosY);
-
                         isMoveValid = true;
                     }
                 }
-
             }
+
+            //print player + surroundings in console
+            print3x3field(player.getPositionX(), player.getPositionY(), ui);
+
+            //draw entities
             ui.drawMonster(rouge.getMonsters());
+            ui.drawPlayer(rouge.getPlayer());
+            
+            checkIfBattle(rouge.getPlayer(), rouge.getMonsters(), ui, inputHandler);
+
             inputHandler.getGatherKeystrokes().take();
         }
 
@@ -132,5 +134,50 @@ public class Main {
             System.out.println();
         }
         System.out.println();
+    }
+
+    private static void checkIfBattle(Player player, ArrayList<Monster> monsters, UserInterface ui, InputHandler inputHandler) throws InterruptedException {
+        for (Monster monster : monsters) {
+            if (player.getPositionX() == monster.getPositionX()
+                    && player.getPositionY() == monster.getPositionY()) {
+                battle(player, monster, ui, inputHandler);
+            }
+        }
+        System.out.println("cib: " + player.getPositionX() + ", " + player.getPositionY());
+
+    }
+
+    private static void battle(Player player, Monster monster, UserInterface ui, InputHandler inputHandler) throws InterruptedException {
+        int playerStrength;
+        int monsterStrength;
+
+        System.out.println("battle begins");
+
+        playerStrength = ThreadLocalRandom.current().nextInt(0, 2);
+        monsterStrength = ThreadLocalRandom.current().nextInt(0, 1);
+
+        ui.updateStatsBar(playerStrength, monsterStrength);
+
+        if (playerStrength > monsterStrength) {
+            if (monster.getLifePoints() - 1 > 0) {
+                monster.setLifePoints(monster.getLifePoints() - 1);
+            } else {
+                System.out.println("monster ded");
+                //TODO:make monster ded
+            }
+        }
+
+        if (monsterStrength > playerStrength) {
+            if (player.getLifePoints() - 1 > 0) {
+                player.setLifePoints(player.getLifePoints() - 1);
+            } else {
+                System.out.println("player ded");
+                //TODO:make player ded
+            }
+        }
+
+        if (monsterStrength == playerStrength) {
+            System.out.println("tie. Press Enter to roll again!");
+        }
     }
 }

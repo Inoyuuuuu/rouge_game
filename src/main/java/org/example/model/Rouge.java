@@ -10,6 +10,7 @@ public class Rouge {
     private static final int PLAYER_LIFEPOINTS = 5;
     private static final int PLAYER_STARTPOS_X = 20;
     private static final int PLAYER_STARTPOS_Y = 20;
+    private final int amountOfMonsters = ThreadLocalRandom.current().nextInt(8, 10);
     private Map map;
     private Player player;
     private ArrayList<Monster> monsters = new ArrayList<>();
@@ -22,7 +23,6 @@ public class Rouge {
         map.initRandomRectangles();
 
         //spawn random number of monsters at random map location
-        int amountOfMonsters = ThreadLocalRandom.current().nextInt(5, 10);
         for (int i = 0; i < amountOfMonsters; i++) {
             int[] randomPos = map.getAvailableMonsterSpawnPoints()
                     .get(ThreadLocalRandom.current().nextInt(0, map.getAvailableMonsterSpawnPoints().size()));
