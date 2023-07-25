@@ -7,11 +7,11 @@ public class Monster extends Entity{
     private int previousPositionX;
     private int previousPositionY;
 
-    public Monster(char entitySymbol, int positionX, int positionY, char monsterSymbol, int positionX1, int positionY1) {
-        super(entitySymbol, positionX, positionY);
+    public Monster(char monsterSymbol, int positionX, int positionY) {
+        super(monsterSymbol, positionX, positionY);
         this.monsterSymbol = monsterSymbol;
-        this.positionX = positionX1;
-        this.positionY = positionY1;
+        this.positionX = positionX;
+        this.positionY = positionY;
     }
 
     public char getMonsterSymbol() {

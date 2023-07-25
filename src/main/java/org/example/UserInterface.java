@@ -4,10 +4,12 @@ import asciiPanel.AsciiCharacterData;
 import asciiPanel.AsciiPanel;
 import org.example.model.CellType;
 import org.example.model.Map;
+import org.example.model.Monster;
 import org.example.model.Player;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class UserInterface extends JFrame {
 
@@ -66,6 +68,14 @@ public class UserInterface extends JFrame {
         panel.clear(' ', player.getPreviousPositionX(), player.getPreviousPositionY(), 1, 1);
         panel.write(player.getPlayerSymbol(), player.getPositionX(), player.getPositionY());
 
+        refresh();
+    }
+
+    public void drawMonster(ArrayList<Monster> monsters) {
+        for (int i = 0; i < monsters.size(); i++) {
+            panel.clear(' ', monsters.get(i).getPreviousPositionX(), monsters.get(i).getPreviousPositionY(), 1, 1);
+            panel.write(monsters.get(i).getMonsterSymbol(), monsters.get(i).getPositionX(), monsters.get(i).getPositionY());
+        }
         refresh();
     }
 

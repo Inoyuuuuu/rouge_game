@@ -1,6 +1,6 @@
 package org.example.model;
 
-public class Entity {
+public abstract class Entity {
     private final char entitySymbol;
     private int positionX;
     private int positionY;

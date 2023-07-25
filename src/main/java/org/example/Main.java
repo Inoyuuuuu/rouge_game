@@ -3,6 +3,7 @@ package org.example;
 import org.example.model.CellType;
 import org.example.model.Map;
 import org.example.model.Player;
+import org.example.model.Rougue;
 
 /**
  * Main class of the program
@@ -22,14 +23,12 @@ public class Main {
         int gameWindowWidth = 120;
         int gameWindowHeight = 40;
 
-        Player player = new Player('@', 20, 20);
-        Map map = new Map(gameWindowWidth, gameWindowHeight);
+        Rougue rougue = new Rougue(gameWindowWidth, gameWindowHeight);
+        Player player = rougue.getPlayer();
+        Map map = rougue.getMap();
 
         UserInterface ui = new UserInterface(gameWindowWidth, gameWindowHeight);
-        InputHandler inputHandler = new InputHandler(ui, player);
-
-        map.initStartChamber(player);
-        map.initRandomRectangles();
+        InputHandler inputHandler = new InputHandler(ui, rougue.getPlayer());
 
         ui.drawMap(map);
 
@@ -61,6 +60,7 @@ public class Main {
 
             //draw player
             ui.drawPlayer(player);
+            ui.drawMonster(rougue.getMonsters());
 
             inputHandler.getGatherKeystrokes().take();
         }
@@ -70,7 +70,7 @@ public class Main {
         ui.dispose();
     }
 
-    /**
+    /** dev tool
      * this method gets a position and prints all the chars next to it
      *
      * @param posX position X

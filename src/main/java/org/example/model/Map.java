@@ -1,10 +1,7 @@
 package org.example.model;
 
-import org.example.InputHandler;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Map {
@@ -115,8 +112,8 @@ public class Map {
                 int currentX = chamberMid[0];
                 paths.add(new Path(chamberMid[0], chamberMid[1]));
 
-                if (chamberMid[0] - nextChamberMid[0] > 0){
-                 moveX = -1;
+                if (chamberMid[0] - nextChamberMid[0] > 0) {
+                    moveX = -1;
                 } else if (chamberMid[0] - nextChamberMid[0] < 0) {
                     moveX = 1;
                 }
@@ -138,19 +135,20 @@ public class Map {
                         paths.getLast().getPathCoordinates().add(currentCoordinates);
                     }
                 }
-                if (cells[currentX][chamberMid[1]].getBelongsToChamberNumber() == 0
+                //draw 3 wide edges on corners
+                /*if (cells[currentX][chamberMid[1]].getBelongsToChamberNumber() == 0
                         || (cells[currentX][chamberMid[1]].getCelltype() == CellType.WALL
                         && cells[currentX][chamberMid[1]].getBelongsToChamberNumber() != 0)) {
 
                     cells[currentX + moveX][chamberMid[1]].setCellType(CellType.BACKGROUND);
                     cells[currentX + moveX][chamberMid[1] + 1].setCellType(CellType.BACKGROUND);
                     cells[currentX + moveX][chamberMid[1] - 1].setCellType(CellType.BACKGROUND);
-                }
+                }*/
 
                 int moveY = 0;
                 int currentY = chamberMid[1];
 
-                if (chamberMid[1] - nextChamberMid[1] > 0){
+                if (chamberMid[1] - nextChamberMid[1] > 0) {
                     moveY = -1;
                 } else if (chamberMid[1] - nextChamberMid[1] < 0) {
                     moveY = 1;
@@ -181,73 +179,6 @@ public class Map {
                 }
             }
         }
-
-        /*            int[] topMidOfChamber = new int[2];
-            topMidOfChamber[0] = currentChamber.getPositionX() + currentChamber.getWidth() / 2;
-            topMidOfChamber[1] = currentChamber.getPositionY();
-
-            int[] botMidOfChamber = new int[2];
-            botMidOfChamber[0] = currentChamber.getPositionX() + currentChamber.getWidth() / 2;
-            botMidOfChamber[1] = currentChamber.getPositionY() + currentChamber.getHeight() - 1;
-
-            int[] rightMidOfChamber = new int[2];
-            rightMidOfChamber[0] = currentChamber.getPositionX() + currentChamber.getWidth() - 1;
-            rightMidOfChamber[1] = currentChamber.getPositionY() + currentChamber.getHeight() / 2;
-
-            int[] leftMidOfChamber = new int[2];
-            leftMidOfChamber[0] = currentChamber.getPositionX();
-            leftMidOfChamber[1] = currentChamber.getPositionY() + currentChamber.getHeight() / 2;
-
-            cells[topMidOfChamber[0]][topMidOfChamber[1]].setCellType(CellType.DOOR);
-            cells[botMidOfChamber[0]][botMidOfChamber[1]].setCellType(CellType.DOOR);
-            cells[rightMidOfChamber[0]][rightMidOfChamber[1]].setCellType(CellType.DOOR);
-            cells[leftMidOfChamber[0]][leftMidOfChamber[1]].setCellType(CellType.DOOR);*/
-
-
-/*
-            for (int k = topMidOfChamber[1] - 1; k >= 0; k--) {
-                if (cells[topMidOfChamber[0]][k].getBelongsToChamberNumber() == 0) {
-                    cells[topMidOfChamber[0]][k].setCellType(CellType.PATH);
-                    if (k == 0) {
-                        for (int j = k; j < topMidOfChamber[1]; j++) {
-                            cells[topMidOfChamber[0]][j].setCellType(CellType.BACKGROUND);
-                        }
-                    }
-                } else {
-                    if (!getChamberByChamberNumber(cells[topMidOfChamber[0]][k].getBelongsToChamberNumber()).isConnected()) {
-                        chambers.get(i).setConnected(true);
-                        getChamberByChamberNumber(cells[topMidOfChamber[0]][k].getBelongsToChamberNumber()).setConnected(true);
-                    } else {
-                        for (int j = k + 1; j < topMidOfChamber[1]; j++) {
-                            cells[topMidOfChamber[0]][j].setCellType(CellType.BACKGROUND);
-                        }
-                    }
-                    break;
-                }
-            }
-
-           for (int k = botMidOfChamber[1] + 1; k < height; k++) {
-                if (cells[botMidOfChamber[0]][k].getBelongsToChamberNumber() == 0) {
-                    cells[botMidOfChamber[0]][k].setCellType(CellType.PATH);
-
-                    if (k == height - 1) {
-                        for (int j = k; j > botMidOfChamber[1]; j--) {
-                            cells[botMidOfChamber[0]][j].setCellType(CellType.BACKGROUND);
-                        }
-                    }
-                } else {
-                    if (!getChamberByChamberNumber(cells[botMidOfChamber[0]][k].getBelongsToChamberNumber()).isConnected()) {
-                        chambers.get(i).setConnected(true);
-                        getChamberByChamberNumber(cells[botMidOfChamber[0]][k].getBelongsToChamberNumber()).setConnected(true);
-                    } else {
-                        for (int j = k - 1; j > botMidOfChamber[1]; j--) {
-                            cells[botMidOfChamber[0]][j].setCellType(CellType.BACKGROUND);
-                        }
-                    }
-                    break;
-                }
-            }
-        }*/
     }
 
     public void initStartChamber(Player player) {
@@ -278,6 +209,24 @@ public class Map {
             }
         }
         return false;
+    }
+
+
+    public ArrayList<int[]> getAvailableMonsterSpawnPoints() {
+        ArrayList<int[]> availableEntitySpawnPoints = new ArrayList<>();
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (cells[i][j].getCelltype() == CellType.CHAMBER) {
+                    int[] currentPos = new int[2];
+                    currentPos[0] = i;
+                    currentPos[1] = j;
+
+                    availableEntitySpawnPoints.add(currentPos);
+                }
+            }
+        }
+        return availableEntitySpawnPoints;
     }
 
     private Chamber getChamberByChamberNumber(int number) {
