@@ -10,6 +10,7 @@ import org.example.model.Player;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class UserInterface extends JFrame {
 
@@ -72,9 +73,9 @@ public class UserInterface extends JFrame {
     }
 
     public void drawMonster(ArrayList<Monster> monsters) {
-        for (int i = 0; i < monsters.size(); i++) {
-            panel.clear(' ', monsters.get(i).getPreviousPositionX(), monsters.get(i).getPreviousPositionY(), 1, 1);
-            panel.write(monsters.get(i).getMonsterSymbol(), monsters.get(i).getPositionX(), monsters.get(i).getPositionY());
+        for (Monster monster : monsters) {
+            panel.clear(' ', monster.getPreviousPositionX(), monster.getPreviousPositionY(), 1, 1);
+            panel.write(monster.getMonsterSymbol(), monster.getPositionX(), monster.getPositionY());
         }
         refresh();
     }
@@ -84,11 +85,11 @@ public class UserInterface extends JFrame {
             for (int y = 0; y < map.getHeight(); y++) {
                     panel.write(map.getCells()[x][y].getContent(), x, y);
 
-                if (map.getCells()[x][y].getCelltype() == CellType.START_AREA) {
+                /*if (map.getCells()[x][y].getCelltype() == CellType.START_AREA) {
                     panel.write('.', x, y, Color.GREEN);
                 } else if (map.getCells()[x][y].getCelltype() == CellType.CHAMBER) {
                     panel.write('.', x, y, Color.RED);
-                }
+                }*/
 
                 if (map.getCells()[x][y].getCelltype() == CellType.DOOR) {
                     panel.write('D', x, y, Color.YELLOW);
@@ -110,34 +111,61 @@ public class UserInterface extends JFrame {
         refresh();
     }
 
-
-    //draws a border around the panel
-    public void drawBorder(char wallSymbol) {
+    public void initStatsBar(int statsBarHeight, char borderTopBotSymbol,  char borderSidesSymbol, int playerLifePoints) {
 
         for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                for (int k = 1; k < 4; k++) {
+            for (int j = 0; j < statsBarHeight; j++) {
 
-                    if (i == 0 || i == width - k || j == 0 || j == height - k) {
-                        panel.write(wallSymbol, i, j);
-                    }
+                panel.write(' ', i, height - j - 1, Color.LIGHT_GRAY, Color.DARK_GRAY);
+
+                if (i == 0 || i == width - 1) {
+                    panel.write(borderSidesSymbol, i, height - j - 1, Color.LIGHT_GRAY, Color.DARK_GRAY);
+                }
+                if (j == 0 || j == statsBarHeight - 1) {
+                    panel.write(borderTopBotSymbol, i, height - j - 1, Color.LIGHT_GRAY, Color.DARK_GRAY);
                 }
             }
         }
 
+        drawRectangle('*', width - (width / 4) * 3, height - statsBarHeight + 1,
+                10, 5, false, Color.LIGHT_GRAY, Color.DARK_GRAY);
+        drawRectangle('*', width - (width / 4) * 3 + 10 + 1, height - statsBarHeight + 1,
+                10, 5, false, Color.LIGHT_GRAY, Color.DARK_GRAY);
+
+        panel.write("HEALTH: ", 1, height - statsBarHeight + 1, Color.WHITE,  Color.DARK_GRAY);
+
+        for (int i = 0; i < playerLifePoints; i++) {
+            panel.write('O', 8 + i, height - statsBarHeight + 1, Color.RED, Color.DARK_GRAY);
+        }
+    }
+
+    public void updateStatsBar(int playerLifePoints) {
+
+    }
+
+    //draws a border around the panel
+    public void drawBorder(char wallSymbol, int statsBarHeight) {
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (i == 0 || i == width - 1|| j == 0 || j == height - statsBarHeight - 1) {
+                    panel.write(wallSymbol, i, j);
+                }
+            }
+        }
         refresh();
     }
 
     // draw a rectangle at a specific position
-/*    public void drawRectangle(char character, int posX, int posY, int width, int height, boolean isFilled) {
+    public void drawRectangle(char character, int posX, int posY, int width, int height, boolean isFilled, Color color, Color backgroundColor) {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
 
                 if (isFilled) {
-                    panel.write(character, posX + i, posY + j);
+                    panel.write(character, posX + i, posY + j, color, backgroundColor);
                 } else {
                     if (i == 0 || i == width - 1 || j == 0 || j == height - 1) {
-                        panel.write(character, posX + i, posY + j);
+                        panel.write(character, posX + i, posY + j, color, backgroundColor);
                     }
                 }
             }
@@ -155,5 +183,5 @@ public class UserInterface extends JFrame {
                 }
             }
         }
-    }*/
+    }
 }

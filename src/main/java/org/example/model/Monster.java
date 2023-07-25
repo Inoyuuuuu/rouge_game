@@ -6,12 +6,14 @@ public class Monster extends Entity{
     private int positionY;
     private int previousPositionX;
     private int previousPositionY;
+    private int lifePoints;
 
-    public Monster(char monsterSymbol, int positionX, int positionY) {
-        super(monsterSymbol, positionX, positionY);
+    public Monster(char monsterSymbol, int positionX, int positionY, int lifePoints) {
+        super(monsterSymbol, positionX, positionY, lifePoints);
         this.monsterSymbol = monsterSymbol;
         this.positionX = positionX;
         this.positionY = positionY;
+        this.lifePoints = lifePoints;
     }
 
     public char getMonsterSymbol() {
@@ -56,5 +58,13 @@ public class Monster extends Entity{
     @Override
     public void setPreviousPositionY(int previousPositionY) {
         this.previousPositionY = previousPositionY;
+    }
+
+    public int getLifePoints() {
+        return lifePoints;
+    }
+
+    public void setLifePoints(int lifePoints) {
+        this.lifePoints = lifePoints;
     }
 }

@@ -6,11 +6,13 @@ public abstract class Entity {
     private int positionY;
     private int previousPositionX;
     private int previousPositionY;
+    private int lifePoints;
 
-    public Entity(char entitySymbol, int positionX, int positionY) {
+    public Entity(char entitySymbol, int positionX, int positionY, int lifePoints) {
         this.entitySymbol = entitySymbol;
         this.positionX = positionX;
         this.positionY = positionY;
+        this.lifePoints = lifePoints;
     }
 
     public char getEntitySymbol() {

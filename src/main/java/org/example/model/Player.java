@@ -6,13 +6,15 @@ public class Player extends Entity{
     private int positionY;
     private int previousPositionX;
     private int previousPositionY;
+    private int lifePoints;
 
-    public Player(char playerSymbol, int initPlayerPosX, int initPlayerPosY) {
-        super(playerSymbol, initPlayerPosX, initPlayerPosY);
+    public Player(char playerSymbol, int initPlayerPosX, int initPlayerPosY, int lifePoints) {
+        super(playerSymbol, initPlayerPosX, initPlayerPosY, lifePoints);
 
         this.playerSymbol = playerSymbol;
         this.positionX = initPlayerPosX;
         this.positionY = initPlayerPosY;
+        this.lifePoints = lifePoints;
 
         this.previousPositionX = positionX;
         this.previousPositionY = positionY;
@@ -52,5 +54,13 @@ public class Player extends Entity{
 
     public void setPreviousPositionY(int previousPositionY) {
         this.previousPositionY = previousPositionY;
+    }
+
+    public int getLifePoints() {
+        return lifePoints;
+    }
+
+    public void setLifePoints(int lifePoints) {
+        this.lifePoints = lifePoints;
     }
 }

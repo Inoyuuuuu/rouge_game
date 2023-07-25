@@ -3,7 +3,9 @@ package org.example;
 import org.example.model.CellType;
 import org.example.model.Map;
 import org.example.model.Player;
-import org.example.model.Rougue;
+import org.example.model.Rouge;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Main class of the program
@@ -23,14 +25,19 @@ public class Main {
         int gameWindowWidth = 120;
         int gameWindowHeight = 40;
 
-        Rougue rougue = new Rougue(gameWindowWidth, gameWindowHeight);
-        Player player = rougue.getPlayer();
-        Map map = rougue.getMap();
+        int statsBarHeight = 7;
 
-        UserInterface ui = new UserInterface(gameWindowWidth, gameWindowHeight);
-        InputHandler inputHandler = new InputHandler(ui, rougue.getPlayer());
+        Rouge rouge = new Rouge(gameWindowWidth, gameWindowHeight);
+        Player player = rouge.getPlayer();
+        Map map = rouge.getMap();
+
+        UserInterface ui = new UserInterface(gameWindowWidth, gameWindowHeight + statsBarHeight);
+        InputHandler inputHandler = new InputHandler(ui, rouge.getPlayer());
 
         ui.drawMap(map);
+        ui.drawBorder('X', statsBarHeight);
+        ui.initStatsBar(statsBarHeight, '=', '|', rouge.getPlayer().getLifePoints());
+
 
         //main loop
         while (!inputHandler.wasEscapePressed()) {
@@ -60,8 +67,31 @@ public class Main {
 
             //draw player
             ui.drawPlayer(player);
-            ui.drawMonster(rougue.getMonsters());
 
+            //move monsters
+            for (int i = 0; i < rouge.getMonsters().size(); i++) {
+                boolean isMoveValid = false;
+
+                while (!isMoveValid) {
+                    int nextMonsterPosX = rouge.getMonsters().get(i).getPositionX()
+                            + ThreadLocalRandom.current().nextInt(-1, 2);
+                    int nextMonsterPosY = rouge.getMonsters().get(i).getPositionY()
+                            + ThreadLocalRandom.current().nextInt(-1, 2);
+
+                    if (map.getCells()[nextMonsterPosX][nextMonsterPosY].getCelltype() == CellType.CHAMBER) {
+
+                        rouge.getMonsters().get(i).setPreviousPositionX(rouge.getMonsters().get(i).getPositionX());
+                        rouge.getMonsters().get(i).setPreviousPositionY(rouge.getMonsters().get(i).getPositionY());
+
+                        rouge.getMonsters().get(i).setPositionX(nextMonsterPosX);
+                        rouge.getMonsters().get(i).setPositionY(nextMonsterPosY);
+
+                        isMoveValid = true;
+                    }
+                }
+
+            }
+            ui.drawMonster(rouge.getMonsters());
             inputHandler.getGatherKeystrokes().take();
         }
 
