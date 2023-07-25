@@ -2,27 +2,30 @@ package org.example;
 
 import org.example.model.Player;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import javax.swing.JFrame;
 
 public class InputHandler implements KeyListener {
-    private Player player;
     private int updatedPlayerPositionX;
     private int updatedPlayerPositionY;
+    private boolean wasEnterPressed;
     private boolean wasEscapePressed;
     private final BlockingQueue<KeyEvent> gatherKeystrokes = new LinkedBlockingQueue<>();
 
     public InputHandler(JFrame inputWindow, Player player) {
         inputWindow.addKeyListener(this);
 
-        this.player = player;
         updatedPlayerPositionX = player.getPositionX();
         updatedPlayerPositionY = player.getPositionY();
 
         this.wasEscapePressed = false;
+        this.wasEnterPressed = false;
     }
 
     public BlockingQueue<KeyEvent> getGatherKeystrokes() {
@@ -39,8 +42,6 @@ public class InputHandler implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-
-        //System.out.println(e.getKeyChar());  <- prints current keystroke
 
         if (e.getKeyChar() == 'w') {
             updatedPlayerPositionY--;
@@ -76,6 +77,12 @@ public class InputHandler implements KeyListener {
             System.out.println("closing game...");
             gatherKeystrokes.add(e);
         }
+
+        if (e.getKeyChar() == KeyEvent.VK_ENTER) {
+
+            this.wasEnterPressed = true;
+            gatherKeystrokes.add(e);
+        }
     }
 
     @Override
@@ -96,5 +103,13 @@ public class InputHandler implements KeyListener {
 
     public void setUpdatedPlayerPositionY(int updatedPlayerPositionY) {
         this.updatedPlayerPositionY = updatedPlayerPositionY;
+    }
+
+    public boolean wasEnterPressed() {
+        return wasEnterPressed;
+    }
+
+    public void setEnterPressed(boolean wasEnterPressed) {
+        this.wasEnterPressed = wasEnterPressed;
     }
 }

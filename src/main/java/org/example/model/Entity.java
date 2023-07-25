@@ -1,16 +1,18 @@
 package org.example.model;
 
-public class Entity {
+public abstract class Entity {
     private final char entitySymbol;
     private int positionX;
     private int positionY;
     private int previousPositionX;
     private int previousPositionY;
+    private int lifePoints;
 
-    public Entity(char entitySymbol, int positionX, int positionY) {
+    public Entity(char entitySymbol, int positionX, int positionY, int lifePoints) {
         this.entitySymbol = entitySymbol;
         this.positionX = positionX;
         this.positionY = positionY;
+        this.lifePoints = lifePoints;
     }
 
     public char getEntitySymbol() {

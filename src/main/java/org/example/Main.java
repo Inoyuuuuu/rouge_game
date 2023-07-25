@@ -1,8 +1,11 @@
 package org.example;
 
-import org.example.model.CellType;
-import org.example.model.Map;
-import org.example.model.Player;
+import org.example.model.*;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Main class of the program
@@ -22,16 +25,18 @@ public class Main {
         int gameWindowWidth = 120;
         int gameWindowHeight = 40;
 
-        Player player = new Player('@', 20, 20);
-        Map map = new Map(gameWindowWidth, gameWindowHeight);
+        int statsBarHeight = 7;
 
-        UserInterface ui = new UserInterface(gameWindowWidth, gameWindowHeight);
-        InputHandler inputHandler = new InputHandler(ui, player);
+        Rouge rouge = new Rouge(gameWindowWidth, gameWindowHeight);
+        Player player = rouge.getPlayer();
+        Map map = rouge.getMap();
 
-        map.initStartChamber(player);
-        map.initRandomRectangles();
+        UserInterface ui = new UserInterface(gameWindowWidth, gameWindowHeight + statsBarHeight, statsBarHeight);
+        InputHandler inputHandler = new InputHandler(ui, rouge.getPlayer());
 
         ui.drawMap(map);
+        ui.drawBorder('X', statsBarHeight);
+        ui.initStatsBar('=', '|', rouge.getPlayer().getLifePoints());
 
         //main loop
         while (!inputHandler.wasEscapePressed()) {
@@ -56,11 +61,38 @@ public class Main {
                 inputHandler.setUpdatedPlayerPositionY(player.getPreviousPositionY());
             }
 
+            //move monsters
+            for (int i = 0; i < rouge.getMonsters().size(); i++) {
+                boolean isMoveValid = false;
+
+                while (!isMoveValid) {
+                    int nextMonsterPosX = rouge.getMonsters().get(i).getPositionX()
+                            + ThreadLocalRandom.current().nextInt(-1, 2)
+                            * ThreadLocalRandom.current().nextInt(0, 2);
+                    int nextMonsterPosY = rouge.getMonsters().get(i).getPositionY()
+                            + ThreadLocalRandom.current().nextInt(-1, 2)
+                            * ThreadLocalRandom.current().nextInt(0, 2);
+
+                    if (map.getCells()[nextMonsterPosX][nextMonsterPosY].getCelltype() == CellType.CHAMBER) {
+
+                        rouge.getMonsters().get(i).setPreviousPositionX(rouge.getMonsters().get(i).getPositionX());
+                        rouge.getMonsters().get(i).setPreviousPositionY(rouge.getMonsters().get(i).getPositionY());
+
+                        rouge.getMonsters().get(i).setPositionX(nextMonsterPosX);
+                        rouge.getMonsters().get(i).setPositionY(nextMonsterPosY);
+                        isMoveValid = true;
+                    }
+                }
+            }
+
             //print player + surroundings in console
             print3x3field(player.getPositionX(), player.getPositionY(), ui);
 
-            //draw player
-            ui.drawPlayer(player);
+            //draw entities
+            ui.drawMonster(rouge.getMonsters());
+            ui.drawPlayer(rouge.getPlayer());
+            
+            checkIfBattle(rouge.getPlayer(), rouge.getMonsters(), ui, inputHandler);
 
             inputHandler.getGatherKeystrokes().take();
         }
@@ -70,7 +102,7 @@ public class Main {
         ui.dispose();
     }
 
-    /**
+    /** dev tool
      * this method gets a position and prints all the chars next to it
      *
      * @param posX position X
@@ -102,5 +134,50 @@ public class Main {
             System.out.println();
         }
         System.out.println();
+    }
+
+    private static void checkIfBattle(Player player, ArrayList<Monster> monsters, UserInterface ui, InputHandler inputHandler) throws InterruptedException {
+        for (Monster monster : monsters) {
+            if (player.getPositionX() == monster.getPositionX()
+                    && player.getPositionY() == monster.getPositionY()) {
+                battle(player, monster, ui, inputHandler);
+            }
+        }
+        System.out.println("cib: " + player.getPositionX() + ", " + player.getPositionY());
+
+    }
+
+    private static void battle(Player player, Monster monster, UserInterface ui, InputHandler inputHandler) throws InterruptedException {
+        int playerStrength;
+        int monsterStrength;
+
+        System.out.println("battle begins");
+
+        playerStrength = ThreadLocalRandom.current().nextInt(0, 2);
+        monsterStrength = ThreadLocalRandom.current().nextInt(0, 1);
+
+        ui.updateStatsBar(playerStrength, monsterStrength);
+
+        if (playerStrength > monsterStrength) {
+            if (monster.getLifePoints() - 1 > 0) {
+                monster.setLifePoints(monster.getLifePoints() - 1);
+            } else {
+                System.out.println("monster ded");
+                //TODO:make monster ded
+            }
+        }
+
+        if (monsterStrength > playerStrength) {
+            if (player.getLifePoints() - 1 > 0) {
+                player.setLifePoints(player.getLifePoints() - 1);
+            } else {
+                System.out.println("player ded");
+                //TODO:make player ded
+            }
+        }
+
+        if (monsterStrength == playerStrength) {
+            System.out.println("tie. Press Enter to roll again!");
+        }
     }
 }
