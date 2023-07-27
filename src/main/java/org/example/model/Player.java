@@ -6,6 +6,7 @@ public class Player extends Entity{
     private int positionY;
     private int previousPositionX;
     private int previousPositionY;
+    private final int maxLifePoints;
     private int lifePoints;
 
     public Player(char playerSymbol, int initPlayerPosX, int initPlayerPosY, int lifePoints) {
@@ -14,6 +15,7 @@ public class Player extends Entity{
         this.playerSymbol = playerSymbol;
         this.positionX = initPlayerPosX;
         this.positionY = initPlayerPosY;
+        this.maxLifePoints = lifePoints;
         this.lifePoints = lifePoints;
 
         this.previousPositionX = positionX;
@@ -62,5 +64,9 @@ public class Player extends Entity{
 
     public void setLifePoints(int lifePoints) {
         this.lifePoints = lifePoints;
+    }
+
+    public int getMaxLifePoints() {
+        return maxLifePoints;
     }
 }
