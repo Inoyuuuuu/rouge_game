@@ -92,7 +92,7 @@ public class Main {
             ui.drawMonster(rouge.getMonsters());
             ui.drawPlayer(rouge.getPlayer());
             
-            checkIfBattle(rouge.getPlayer(), rouge.getMonsters(), ui, inputHandler);
+            checkIfBattle(rouge.getPlayer(), rouge.getMonsters(), ui, inputHandler, rouge);
 
             inputHandler.getGatherKeystrokes().take();
         }
@@ -136,11 +136,12 @@ public class Main {
         System.out.println();
     }
 
-    private static void checkIfBattle(Player player, ArrayList<Monster> monsters, UserInterface ui, InputHandler inputHandler) throws InterruptedException {
+    private static void checkIfBattle(Player player, ArrayList<Monster> monsters, UserInterface ui, InputHandler inputHandler, Rouge rouge) throws InterruptedException {
         for (Monster monster : monsters) {
             if (player.getPositionX() == monster.getPositionX()
                     && player.getPositionY() == monster.getPositionY()) {
-                battle(player, monster, ui, inputHandler);
+                //battle(player, monster, ui, inputHandler);
+                rouge.battle(player, monster, ui, inputHandler);
             }
         }
         System.out.println("cib: " + player.getPositionX() + ", " + player.getPositionY());

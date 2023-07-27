@@ -20,7 +20,6 @@ public class UserInterface extends JFrame {
     private final int heightInPixels;
     private final AsciiPanel panel;
 
-
     UserInterface(int width, int height, int statsBarHeigth) {
         super("RogueTeaching");
 
@@ -68,16 +67,15 @@ public class UserInterface extends JFrame {
     //overwrite previous position and write player symbol at new position
     public void drawPlayer(Player player) {
         panel.clear(' ', player.getPreviousPositionX(), player.getPreviousPositionY(), 1, 1);
-        panel.write(player.getPlayerSymbol(), player.getPositionX(), player.getPositionY());
+        panel.write(player.getPlayerSymbol(), player.getPositionX(), player.getPositionY(), Color.YELLOW);
 
-        System.out.println(player.getPositionX() + ", " + player.getPositionY());
         refresh();
     }
 
     public void drawMonster(ArrayList<Monster> monsters) {
         for (Monster monster : monsters) {
             panel.clear(' ', monster.getPreviousPositionX(), monster.getPreviousPositionY(), 1, 1);
-            panel.write(monster.getMonsterSymbol(), monster.getPositionX(), monster.getPositionY());
+            panel.write(monster.getMonsterSymbol(), monster.getPositionX(), monster.getPositionY(), Color.RED);
             refresh();
         }
     }
@@ -134,6 +132,9 @@ public class UserInterface extends JFrame {
         drawRectangle('*', width - (width / 4) * 3 + 7 + 1, height - statsBarHeight + 1,
                 7, 5, false, Color.LIGHT_GRAY, Color.DARK_GRAY);
 
+        panel.write('P', width - (width / 4) * 3 + 3, height - statsBarHeight + 1, Color.LIGHT_GRAY, Color.DARK_GRAY);
+        panel.write('M', width - (width / 4) * 3 + 11, height - statsBarHeight + 1, Color.LIGHT_GRAY, Color.DARK_GRAY);
+
         panel.write("HEALTH: ", 1, height - statsBarHeight + 1, Color.WHITE,  Color.DARK_GRAY);
 
         for (int i = 0; i < playerLifePoints; i++) {
@@ -144,8 +145,8 @@ public class UserInterface extends JFrame {
     }
 
     public void updateStatsBar(int playerStrengthNumber, int monsterStrengthNumber) {
-        panel.write(String.valueOf(playerStrengthNumber), width - (width / 4) * 3 + 3, height - statsBarHeight / 2 - 1, Color.LIGHT_GRAY, Color.RED);
-        panel.write(String.valueOf(monsterStrengthNumber), width - (width / 4) * 3 + 7 + 1 + 3, height - statsBarHeight / 2 - 1, Color.LIGHT_GRAY, Color.RED);
+        panel.write(String.valueOf(playerStrengthNumber), width - (width / 4) * 3 + 4, height - statsBarHeight / 2 - 1, Color.LIGHT_GRAY, Color.RED);
+        panel.write(String.valueOf(monsterStrengthNumber), width - (width / 4) * 3 + 12, height - statsBarHeight / 2 - 1, Color.LIGHT_GRAY, Color.RED);
     }
 
     public void drawButton(int posX, int posY, int sizeX, int sizeY, char buttonChar, String text) {
