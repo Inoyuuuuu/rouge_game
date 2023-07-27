@@ -8,6 +8,7 @@ public class Player extends Entity{
     private int previousPositionY;
     private final int maxLifePoints;
     private int lifePoints;
+    boolean isInBattle;
 
     public Player(char playerSymbol, int initPlayerPosX, int initPlayerPosY, int lifePoints) {
         super(playerSymbol, initPlayerPosX, initPlayerPosY, lifePoints);
@@ -68,5 +69,13 @@ public class Player extends Entity{
 
     public int getMaxLifePoints() {
         return maxLifePoints;
+    }
+
+    public boolean isInBattle() {
+        return isInBattle;
+    }
+
+    public void setInBattle(boolean inBattle) {
+        isInBattle = inBattle;
     }
 }

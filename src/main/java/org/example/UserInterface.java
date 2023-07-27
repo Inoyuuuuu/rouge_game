@@ -78,8 +78,8 @@ public class UserInterface extends JFrame {
         for (Monster monster : monsters) {
             panel.clear(' ', monster.getPreviousPositionX(), monster.getPreviousPositionY(), 1, 1);
             panel.write(monster.getMonsterSymbol(), monster.getPositionX(), monster.getPositionY(), monster.getMonsterColor());
-            refresh();
         }
+        refresh();
     }
 
     public void drawMap(Map map) {
@@ -215,5 +215,10 @@ public class UserInterface extends JFrame {
                 }
             }
         }
+    }
+
+    public void drawPoint(int posX, int posY) {
+        panel.write('.', posX, posY, Color.GREEN);
+        refresh();
     }
 }

@@ -74,25 +74,29 @@ public class Main {
                                 + ThreadLocalRandom.current().nextInt(-1, 2)
                                 * ThreadLocalRandom.current().nextInt(0, 2);
 
-                        if (map.getCells()[nextMonsterPosX][nextMonsterPosY].getCelltype() == CellType.CHAMBER) {
+                        rouge.getMonsters().get(i).setPreviousPositionX(rouge.getMonsters().get(i).getPositionX());
+                        rouge.getMonsters().get(i).setPreviousPositionY(rouge.getMonsters().get(i).getPositionY());
 
-                            rouge.getMonsters().get(i).setPreviousPositionX(rouge.getMonsters().get(i).getPositionX());
-                            rouge.getMonsters().get(i).setPreviousPositionY(rouge.getMonsters().get(i).getPositionY());
+                        if (map.getCells()[nextMonsterPosX][nextMonsterPosY].getCelltype() == CellType.CHAMBER) {
 
                             rouge.getMonsters().get(i).setPositionX(nextMonsterPosX);
                             rouge.getMonsters().get(i).setPositionY(nextMonsterPosY);
+
                             isMoveValid = true;
                         }
                     }
+                    printCurrentPos(rouge.getPlayer(), rouge.getMonsters(), 0);
                 }
             }
-
-            //print player + surroundings in console
-            print3x3field(player.getPositionX(), player.getPositionY(), ui);
 
             //draw entities
             ui.drawMonster(rouge.getMonsters());
             ui.drawPlayer(rouge.getPlayer());
+
+            //print player + surroundings in console
+            print3x3field(player.getPositionX(), player.getPositionY(), ui);
+
+            printCurrentPos(rouge.getPlayer(), rouge.getMonsters(), 1);
 
             checkIfBattle(rouge.getPlayer(), rouge.getMonsters(), ui, inputHandler);
 
@@ -143,6 +147,14 @@ public class Main {
         System.out.println();
     }
 
+    private static void printCurrentPos(Player player, ArrayList<Monster> monsters, int version) {
+        System.out.println(version);
+        for (int i = 0; i < monsters.size(); i++) {
+            System.out.println(i + "oM:" + monsters.get(i).getPositionX() + ", " + monsters.get(i).getPositionY());
+        }
+        System.out.println("oMP:" + player.getPositionX() + ", " + player.getPositionY());
+    }
+
     private static void checkIfBattle(Player player, ArrayList<Monster> monsters, UserInterface ui, InputHandler inputHandler) throws InterruptedException {
         for (Monster monster : monsters) {
             if (player.getPositionX() == monster.getPositionX()
@@ -154,6 +166,7 @@ public class Main {
 
     public static void battle(Player player, Monster monster, UserInterface ui, InputHandler inputHandler) throws InterruptedException {
         boolean isBattleOver = false;
+        player.setInBattle(true);
         System.out.println("battle begins");
 
         ui.initMonsterHealth(monster);
@@ -207,5 +220,6 @@ public class Main {
                 inputHandler.setEnterPressed(false);
             }
         }
+        player.setInBattle(false);
     }
 }

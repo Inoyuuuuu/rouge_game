@@ -16,11 +16,13 @@ public class InputHandler implements KeyListener {
     private int updatedPlayerPositionY;
     private boolean wasEnterPressed;
     private boolean wasEscapePressed;
+    private final Player player;
     private final BlockingQueue<KeyEvent> gatherKeystrokes = new LinkedBlockingQueue<>();
 
     public InputHandler(JFrame inputWindow, Player player) {
         inputWindow.addKeyListener(this);
 
+        this.player = player;
         updatedPlayerPositionX = player.getPositionX();
         updatedPlayerPositionY = player.getPositionY();
 
@@ -44,30 +46,35 @@ public class InputHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
 
         if (e.getKeyChar() == 'w') {
-            updatedPlayerPositionY--;
+            if (!player.isInBattle()) {
+                updatedPlayerPositionY--;
 
-            this.gatherKeystrokes.add(e);
+                this.gatherKeystrokes.add(e);
+            }
         }
 
         if (e.getKeyChar() == 'a') {
-            updatedPlayerPositionX--;
+            if (!player.isInBattle()) {
+                updatedPlayerPositionX--;
 
-
-            gatherKeystrokes.add(e);
+                gatherKeystrokes.add(e);
+            }
         }
 
         if (e.getKeyChar() == 's') {
-            updatedPlayerPositionY++;
+            if (!player.isInBattle()) {
+                updatedPlayerPositionY++;
 
-
-            this.gatherKeystrokes.add(e);
+                this.gatherKeystrokes.add(e);
+            }
         }
 
         if (e.getKeyChar() == 'd') {
-            updatedPlayerPositionX++;
+            if (!player.isInBattle()) {
+                updatedPlayerPositionX++;
 
-
-            this.gatherKeystrokes.add(e);
+                this.gatherKeystrokes.add(e);
+            }
         }
 
         if (e.getKeyChar() == KeyEvent.VK_ESCAPE) {
