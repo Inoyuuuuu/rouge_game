@@ -3,7 +3,6 @@ package org.example;
 import org.example.model.*;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -85,25 +84,21 @@ public class Main {
                             isMoveValid = true;
                         }
                     }
-                    printCurrentPos(rouge.getPlayer(), rouge.getMonsters(), 0);
                 }
+                //ui.debug_drawPoint(rouge.getMonsters().get(i).getPositionX(), rouge.getMonsters().get(i).getPositionY());
+                
+                //draw entities
+                ui.drawMonster(rouge.getMonsters());
+                ui.drawPlayer(rouge.getPlayer());
+                checkIfBattle(rouge.getPlayer(), rouge.getMonsters(), ui, inputHandler);
             }
 
-            //draw entities
-            ui.drawMonster(rouge.getMonsters());
-            ui.drawPlayer(rouge.getPlayer());
-
-            //print player + surroundings in console
-            print3x3field(player.getPositionX(), player.getPositionY(), ui);
-
-            printCurrentPos(rouge.getPlayer(), rouge.getMonsters(), 1);
-
-            checkIfBattle(rouge.getPlayer(), rouge.getMonsters(), ui, inputHandler);
+            //debug_printCurrentPos(rouge.getPlayer(), rouge.getMonsters(), 1);
+            //debug_print3x3field(player.getPositionX(), player.getPositionY(), ui);
 
             inputHandler.getGatherKeystrokes().take();
         }
 
-        //after while loop, close window
         closeGame(ui);
     }
 
@@ -120,7 +115,7 @@ public class Main {
      * @param posY position Y
      * @param ui the UserInterface with the ascii-panel the characters are on
      */
-    private static void print3x3field(int posX, int posY, UserInterface ui) {
+    private static void debug_print3x3field(int posX, int posY, UserInterface ui) {
 
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
@@ -147,7 +142,7 @@ public class Main {
         System.out.println();
     }
 
-    private static void printCurrentPos(Player player, ArrayList<Monster> monsters, int version) {
+    private static void debug_printCurrentPos(Player player, ArrayList<Monster> monsters, int version) {
         System.out.println(version);
         for (int i = 0; i < monsters.size(); i++) {
             System.out.println(i + "oM:" + monsters.get(i).getPositionX() + ", " + monsters.get(i).getPositionY());
@@ -169,6 +164,7 @@ public class Main {
         player.setInBattle(true);
         System.out.println("battle begins");
 
+        ui.drawRollButton( 23, 3, ' ', "[press Enter to roll]", Color.BLACK, Color.LIGHT_GRAY);
         ui.initMonsterHealth(monster);
 
         while (!isBattleOver) {
@@ -181,7 +177,7 @@ public class Main {
                 playerStrength = ThreadLocalRandom.current().nextInt(0, 10);
                 monsterStrength = ThreadLocalRandom.current().nextInt(0, 10);
 
-                ui.updateStatsBar(playerStrength, monsterStrength);
+                ui.updateRolledNumbers(playerStrength, monsterStrength);
 
                 if (playerStrength > monsterStrength) {
                     if (monster.getLifePoints() - 1 > 0) {
@@ -221,5 +217,10 @@ public class Main {
             }
         }
         player.setInBattle(false);
+
+        //clear stats bar
+        ui.drawRollButton( 23, 3, ' ', "", Color.WHITE, Color.DARK_GRAY);
+        ui.clearMonsterHealth(monster);
+        ui.clearRolledNumbers();
     }
 }
