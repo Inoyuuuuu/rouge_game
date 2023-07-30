@@ -2,7 +2,7 @@ package org.example.model;
 
 import java.awt.*;
 
-public class Monster extends Entity{
+public class Monster extends Entity {
     private final char monsterSymbol;
     private int positionX;
     private int positionY;

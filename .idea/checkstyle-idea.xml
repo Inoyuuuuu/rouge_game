@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CheckStyle-IDEA" serialisationVersion="2">
-    <checkstyleVersion>10.12.0</checkstyleVersion>
+    <checkstyleVersion>10.12.1</checkstyleVersion>
     <scanScope>JavaOnly</scanScope>
     <copyLibs>true</copyLibs>
     <option name="thirdPartyClasspath" />
-    <option name="activeLocationIds" />
+    <option name="activeLocationIds">
+      <option value="0bdfdb0b-fe53-49fb-907a-5a7621a647f8" />
+    </option>
     <option name="locations">
       <list>
         <ConfigurationLocation id="bundled-sun-checks" type="BUNDLED" scope="All" description="Sun Checks">(bundled)</ConfigurationLocation>
         <ConfigurationLocation id="bundled-google-checks" type="BUNDLED" scope="All" description="Google Checks">(bundled)</ConfigurationLocation>
-        <ConfigurationLocation id="673ddc68-1f47-45dd-b0dd-1fa1d08d9f6d" type="LOCAL_FILE" scope="All" description="kitOpt">$PROJECT_DIR$/../../../../Programmieren/AB3/checkstyle-optional.xml</ConfigurationLocation>
-        <ConfigurationLocation id="8a47c4d4-1eb3-47e1-a8f9-8800302083ab" type="PROJECT_RELATIVE" scope="All" description="kitReq">$PROJECT_DIR$/../../../../Programmieren/AB3/checkstyle-required.xml</ConfigurationLocation>
+        <ConfigurationLocation id="0bdfdb0b-fe53-49fb-907a-5a7621a647f8" type="LOCAL_FILE" scope="All" description="kit_R">$PROJECT_DIR$/../../../../Programmieren/AB5/checkstyle-required.xml</ConfigurationLocation>
       </list>
     </option>
   </component>

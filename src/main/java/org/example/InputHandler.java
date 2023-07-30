@@ -2,14 +2,11 @@ package org.example;
 
 import org.example.model.Player;
 
-import java.awt.*;
+import javax.swing.JFrame;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import javax.swing.JFrame;
 
 public class InputHandler implements KeyListener {
     private int updatedPlayerPositionX;

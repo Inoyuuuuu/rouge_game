@@ -1,6 +1,6 @@
 package org.example.model;
 
-public class Player extends Entity{
+public class Player extends Entity {
     private final char playerSymbol;
     private int positionX;
     private int positionY;
@@ -8,7 +8,7 @@ public class Player extends Entity{
     private int previousPositionY;
     private final int maxLifePoints;
     private int lifePoints;
-    boolean isInBattle;
+    private boolean isInBattle;
 
     public Player(char playerSymbol, int initPlayerPosX, int initPlayerPosY, int lifePoints) {
         super(playerSymbol, initPlayerPosX, initPlayerPosY, lifePoints);

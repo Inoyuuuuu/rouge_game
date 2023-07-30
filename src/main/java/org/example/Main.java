@@ -8,8 +8,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Main class of the program
- * @author ukuny
- *
+ * @author inoyu
+ * @version 1.0
  */
 public class Main {
 
@@ -20,16 +20,13 @@ public class Main {
      * @throws InterruptedException throw because of BlockingQueue.take()
      */
     public static void main(String[] args) throws InterruptedException {
-
         int gameWindowWidth = 120;
         int gameWindowHeight = 40;
-
         int statsBarHeight = 7;
 
         Rouge rouge = new Rouge(gameWindowWidth, gameWindowHeight);
         Player player = rouge.getPlayer();
         Map map = rouge.getMap();
-
         UserInterface ui = new UserInterface(gameWindowWidth, gameWindowHeight + statsBarHeight, statsBarHeight);
         InputHandler inputHandler = new InputHandler(ui, rouge.getPlayer());
 
@@ -85,8 +82,9 @@ public class Main {
                         }
                     }
                 }
-                //ui.debug_drawPoint(rouge.getMonsters().get(i).getPositionX(), rouge.getMonsters().get(i).getPositionY());
-                
+                /*ui.debug_drawPoint(rouge.getMonsters().get(i).getPositionX(),
+                 rouge.getMonsters().get(i).getPositionY());*/
+
                 //draw entities
                 ui.drawMonster(rouge.getMonsters());
                 ui.drawPlayer(rouge.getPlayer());
@@ -150,7 +148,8 @@ public class Main {
         System.out.println("oMP:" + player.getPositionX() + ", " + player.getPositionY());
     }
 
-    private static void checkIfBattle(Player player, ArrayList<Monster> monsters, UserInterface ui, InputHandler inputHandler) throws InterruptedException {
+    private static void checkIfBattle(Player player, ArrayList<Monster> monsters,
+                                      UserInterface ui, InputHandler inputHandler) throws InterruptedException {
         for (Monster monster : monsters) {
             if (player.getPositionX() == monster.getPositionX()
                     && player.getPositionY() == monster.getPositionY()) {
@@ -159,12 +158,15 @@ public class Main {
         }
     }
 
-    public static void battle(Player player, Monster monster, UserInterface ui, InputHandler inputHandler) throws InterruptedException {
+    public static void battle(Player player, Monster monster,
+                              UserInterface ui, InputHandler inputHandler) throws InterruptedException {
         boolean isBattleOver = false;
         player.setInBattle(true);
         System.out.println("battle begins");
 
-        ui.drawRollButton( 23, 3, ' ', "[press Enter to roll]", Color.BLACK, Color.LIGHT_GRAY);
+        ui.clearMonsterHealth(monster);
+        ui.drawRollButton(23, 3, ' ',
+                "[press Enter to roll]", Color.BLACK, Color.LIGHT_GRAY);
         ui.initMonsterHealth(monster);
 
         while (!isBattleOver) {
@@ -219,7 +221,7 @@ public class Main {
         player.setInBattle(false);
 
         //clear stats bar
-        ui.drawRollButton( 23, 3, ' ', "", Color.WHITE, Color.DARK_GRAY);
+        ui.drawRollButton(23, 3, ' ', "", Color.WHITE, Color.DARK_GRAY);
         ui.clearMonsterHealth(monster);
         ui.clearRolledNumbers();
     }

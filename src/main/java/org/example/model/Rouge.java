@@ -1,6 +1,5 @@
 package org.example.model;
 
-import org.example.InputHandler;
 import org.example.UserInterface;
 
 import java.awt.*;

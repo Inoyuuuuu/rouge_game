@@ -12,13 +12,12 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class UserInterface extends JFrame {
-
+    private static final int STATS_DISTANCE_LEFT = 25;
     private final int width;
     private final int height;
     private final int statsBarHeight;
     private final int widthInPixels;
     private final int heightInPixels;
-    private static final int STATS_DISTANCE_LEFT = 25;
     private final AsciiPanel panel;
 
 
@@ -77,7 +76,8 @@ public class UserInterface extends JFrame {
     public void drawMonster(ArrayList<Monster> monsters) {
         for (Monster monster : monsters) {
             panel.clear(' ', monster.getPreviousPositionX(), monster.getPreviousPositionY(), 1, 1);
-            panel.write(monster.getMonsterSymbol(), monster.getPositionX(), monster.getPositionY(), monster.getMonsterColor());
+            panel.write(monster.getMonsterSymbol(), monster.getPositionX(),
+                    monster.getPositionY(), monster.getMonsterColor());
         }
         refresh();
     }
@@ -85,7 +85,7 @@ public class UserInterface extends JFrame {
     public void drawMap(Map map) {
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
-                    panel.write(map.getCells()[x][y].getContent(), x, y);
+                panel.write(map.getCells()[x][y].getContent(), x, y);
 
                 if (map.getCells()[x][y].getCelltype() == CellType.DOOR) {
                     panel.write('D', x, y, Color.YELLOW);
@@ -124,39 +124,54 @@ public class UserInterface extends JFrame {
         }
 
         drawRectangle('*', width - (width / 4) * 3 + STATS_DISTANCE_LEFT - 5, height - statsBarHeight + 1,
-                7, 5, false, Color.LIGHT_GRAY, Color.DARK_GRAY);
+                7, 5, Color.LIGHT_GRAY, Color.DARK_GRAY);
         drawRectangle('*', width - (width / 4) * 3 + STATS_DISTANCE_LEFT + 3, height - statsBarHeight + 1,
-                7, 5, false, Color.LIGHT_GRAY, Color.DARK_GRAY);
-        panel.write('P', width - (width / 4) * 3 + STATS_DISTANCE_LEFT - 2, height - statsBarHeight + 1, Color.LIGHT_GRAY, Color.DARK_GRAY);
-        panel.write('M', width - (width / 4) * 3 + STATS_DISTANCE_LEFT + 6, height - statsBarHeight + 1, Color.LIGHT_GRAY, Color.DARK_GRAY);
+                7, 5, Color.LIGHT_GRAY, Color.DARK_GRAY);
+
+        int playerCharPosX = width - (width / 4) * 3 + STATS_DISTANCE_LEFT - 2;
+        int playerCharPosY = height - statsBarHeight + 1;
+        int monsterCharPosX = width - (width / 4) * 3 + STATS_DISTANCE_LEFT + 6;
+        int monsterCharPosY = height - statsBarHeight + 1;
+        panel.write('P', playerCharPosX, playerCharPosY, Color.LIGHT_GRAY, Color.DARK_GRAY);
+        panel.write('M', monsterCharPosX, monsterCharPosY, Color.LIGHT_GRAY, Color.DARK_GRAY);
 
         panel.write("PLAYER HEALTH: ", 1, height - statsBarHeight + 1, Color.WHITE,  Color.DARK_GRAY);
         for (int i = 0; i < playerLifePoints; i++) {
             panel.write('O', 16 + i, height - statsBarHeight + 1, Color.RED, Color.DARK_GRAY);
         }
-
-        panel.write("Waiting for combat...", width - (width / 4) * 3 + STATS_DISTANCE_LEFT + 20, height - statsBarHeight + 1, Color.WHITE, Color.DARK_GRAY);
+        drawWaitingForCombat();
     }
 
     public void initMonsterHealth(Monster monster) {
-        panel.write("Monster:", width - (width / 4) * 3 + STATS_DISTANCE_LEFT + 20, height - statsBarHeight + 1, Color.WHITE, Color.DARK_GRAY);
+        panel.write("Monster:", width - (width / 4) * 3 + STATS_DISTANCE_LEFT + 20,
+                height - statsBarHeight + 1, Color.WHITE, Color.DARK_GRAY);
         for (int i = 0; i < monster.getMaxLifePoints(); i++) {
-            panel.write('O', width - (width / 4) * 3 + STATS_DISTANCE_LEFT + 20 + i, height - statsBarHeight + 2, Color.RED, Color.DARK_GRAY);
+            panel.write('O', width - (width / 4) * 3 + STATS_DISTANCE_LEFT + 20 + i,
+                    height - statsBarHeight + 2, Color.RED, Color.DARK_GRAY);
         }
         refresh();
     }
 
     public void clearMonsterHealth(Monster monster) {
-        panel.write("Waiting for combat...", width - (width / 4) * 3 + STATS_DISTANCE_LEFT + 20, height - statsBarHeight + 1, Color.WHITE, Color.DARK_GRAY);
+        panel.write(" ".repeat("Waiting for combat...".length()), width - (width / 4) * 3 + STATS_DISTANCE_LEFT + 20,
+                height - statsBarHeight + 1, Color.WHITE, Color.DARK_GRAY);
+
         for (int i = 0; i < monster.getMaxLifePoints(); i++) {
-            panel.write(' ', width - (width / 4) * 3 + STATS_DISTANCE_LEFT + 20 + i, height - statsBarHeight + 2, Color.RED, Color.DARK_GRAY);
+            panel.write(' ', width - (width / 4) * 3 + STATS_DISTANCE_LEFT + 20 + i,
+                    height - statsBarHeight + 2, Color.RED, Color.DARK_GRAY);
         }
         refresh();
     }
 
+    public void drawWaitingForCombat() {
+        panel.write("Waiting for combat...", width - (width / 4) * 3 + STATS_DISTANCE_LEFT + 20,
+                height - statsBarHeight + 1, Color.WHITE, Color.DARK_GRAY);
+    }
+
     public void updateMonsterHealth(Monster monster) {
         for (int i = monster.getLifePoints(); i < monster.getMaxLifePoints(); i++) {
-            panel.write('X', width - (width / 4) * 3 + STATS_DISTANCE_LEFT + 20 + i, height - statsBarHeight + 2, Color.BLACK, Color.DARK_GRAY);
+            panel.write('X', width - (width / 4) * 3 + STATS_DISTANCE_LEFT + 20 + i,
+                    height - statsBarHeight + 2, Color.BLACK, Color.DARK_GRAY);
         }
         refresh();
     }
@@ -169,14 +184,18 @@ public class UserInterface extends JFrame {
     }
 
     public void updateRolledNumbers(int playerStrengthNumber, int monsterStrengthNumber) {
-        panel.write(String.valueOf(playerStrengthNumber), width - (width / 4) * 3 + STATS_DISTANCE_LEFT - 2, height - statsBarHeight / 2 - 1, Color.RED, Color.DARK_GRAY);
-        panel.write(String.valueOf(monsterStrengthNumber), width - (width / 4) * 3 + STATS_DISTANCE_LEFT + 6, height - statsBarHeight / 2 - 1, Color.RED, Color.DARK_GRAY);
+        panel.write(String.valueOf(playerStrengthNumber), width - (width / 4) * 3 + STATS_DISTANCE_LEFT - 2,
+                height - statsBarHeight / 2 - 1, Color.RED, Color.DARK_GRAY);
+        panel.write(String.valueOf(monsterStrengthNumber), width - (width / 4) * 3 + STATS_DISTANCE_LEFT + 6,
+                height - statsBarHeight / 2 - 1, Color.RED, Color.DARK_GRAY);
         refresh();
     }
 
     public void clearRolledNumbers() {
-        panel.write(' ', width - (width / 4) * 3 + STATS_DISTANCE_LEFT - 2, height - statsBarHeight / 2 - 1, Color.WHITE, Color.DARK_GRAY);
-        panel.write(' ', width - (width / 4) * 3 + STATS_DISTANCE_LEFT + 6, height - statsBarHeight / 2 - 1, Color.WHITE, Color.DARK_GRAY);
+        panel.write(' ', width - (width / 4) * 3 + STATS_DISTANCE_LEFT - 2,
+                height - statsBarHeight / 2 - 1, Color.WHITE, Color.DARK_GRAY);
+        panel.write(' ', width - (width / 4) * 3 + STATS_DISTANCE_LEFT + 6,
+                height - statsBarHeight / 2 - 1, Color.WHITE, Color.DARK_GRAY);
         refresh();
     }
 
@@ -184,7 +203,7 @@ public class UserInterface extends JFrame {
         int posX = STATS_DISTANCE_LEFT;
         int posY = height - 5;
 
-        drawRectangle(buttonChar, posX, posY, sizeX, sizeY, buttonChar, foreColor, backColor);
+        drawFilledRectangle(buttonChar, posX, posY, sizeX, sizeY, foreColor, backColor);
         panel.write(text, posX + 1, posY + sizeY / 2, foreColor, backColor);
     }
 
@@ -193,7 +212,7 @@ public class UserInterface extends JFrame {
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                if (i == 0 || i == width - 1|| j == 0 || j == height - statsBarHeight - 1) {
+                if (i == 0 || i == width - 1 || j == 0 || j == height - statsBarHeight - 1) {
                     panel.write(wallSymbol, i, j);
                 }
             }
@@ -204,30 +223,22 @@ public class UserInterface extends JFrame {
     //---------------------------------------------------------------------------------------------
 
     // draw a rectangle at a specific position
-    public void drawRectangle(char character, int posX, int posY, int width, int height, boolean isFilled, Color color, Color backgroundColor) {
+    public void drawRectangle(char character, int posX, int posY, int width, int height,
+                              Color color, Color backgroundColor) {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-
-                if (isFilled) {
+                if (i == 0 || i == width - 1 || j == 0 || j == height - 1) {
                     panel.write(character, posX + i, posY + j, color, backgroundColor);
-                } else {
-                    if (i == 0 || i == width - 1 || j == 0 || j == height - 1) {
-                        panel.write(character, posX + i, posY + j, color, backgroundColor);
-                    }
                 }
             }
         }
     }
 
-    // draw a rectangle at a specific position and fill it with a custom char
-    public void drawRectangle(char character, int posX, int posY, int width, int height, char fillChar, Color foreColor, Color backColor) {
+    public void drawFilledRectangle(char character, int posX, int posY, int width, int height,
+                              Color color, Color backgroundColor) {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                if (i == 0 || i == width - 1 || j == 0 || j == height - 1) {
-                    panel.write(character, posX + i, posY + j, foreColor, backColor);
-                } else {
-                    panel.write(fillChar, posX + i, posY + j, foreColor, backColor);
-                }
+                panel.write(character, posX + i, posY + j, color, backgroundColor);
             }
         }
     }
